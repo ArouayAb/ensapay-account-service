@@ -1,14 +1,24 @@
 package ensa.ebanking.accountservice.Entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 public class Client implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotEmpty
+    @Size(min = 10 ,max = 10)
     private String phoneNumber;
+
+
     private String password;
 
     @OneToOne
@@ -19,6 +29,12 @@ public class Client implements Serializable {
     }
 
     public Client() {
+    }
+
+    public Client(String phoneNumber, String password, Profile profile) {
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.profile = profile;
     }
 
     public String getPhoneNumber() {
@@ -48,4 +64,5 @@ public class Client implements Serializable {
     public Long getId() {
         return id;
     }
+
 }
