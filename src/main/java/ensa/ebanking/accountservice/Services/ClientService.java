@@ -62,4 +62,8 @@ public class ClientService implements UserDetailsService {
         clientDAO.save(client);
     }
 
+    public Client getClient(String phoneNumber) {
+        return clientDAO.findByPhoneNumber(phoneNumber);
+    }
+
 }
