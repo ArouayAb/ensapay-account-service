@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ensa.ebanking.accountservice.Entities.Client;
 import ensa.ebanking.accountservice.Services.ClientService;
+import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,10 +36,10 @@ public class AuthenticationController {
 
     @GetMapping("/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String refresh_token = authorizationHeader.substring("Bearer ".length());
-            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
+        if(authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
+            String refresh_token = authorizationHeader.substring(JWTUtil.PREFIX.length());
+            Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
             JWTVerifier verifier = JWT.require(algorithm).build();
             try {
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
@@ -46,7 +47,7 @@ public class AuthenticationController {
                 Client client = clientService.getClient(phoneNumber);
                 String access_token = JWT.create()
                         .withSubject(client.getPhoneNumber())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + JWTUtil.EXPIRATION_ACCESS_TOKEN))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("phoneNumber", client.getPhoneNumber())
                         .sign(algorithm);

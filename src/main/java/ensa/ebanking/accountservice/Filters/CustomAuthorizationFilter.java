@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +26,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/auth/refresh")) {
             filterChain.doFilter(request, response);
         } else {
-            String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                String token = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
+            if(authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
+                String token = authorizationHeader.substring(JWTUtil.PREFIX.length());
+                Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 try {
                     DecodedJWT decodedJWT = verifier.verify(token);
