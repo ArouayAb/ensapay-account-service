@@ -1,51 +1,23 @@
-package ensa.ebanking.accountservice.Entities;
+package ensa.ebanking.accountservice.DTO;
 
 import ensa.ebanking.accountservice.Enums.ProductType;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.sql.Date;
-import java.util.List;
-
-@Entity
-public class Profile implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
+public class ClientProfileDTO {
     private ProductType productType;
-
-    @NotEmpty
     private String name;
-
-    @NotEmpty
     private String surname;
-
-    @Email
+    private String phone;
     private String email;
 
-    public Profile() {
-    }
-
-    public Profile( ProductType productType, String name, String surname, String email) {
+    public ClientProfileDTO(ProductType productType, String name, String surname, String phone, String email) {
         this.productType = productType;
         this.name = name;
         this.surname = surname;
+        this.phone = phone;
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ClientProfileDTO() {
     }
 
     public ProductType getProductType() {
@@ -72,6 +44,14 @@ public class Profile implements Serializable {
         this.surname = surname;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -79,6 +59,4 @@ public class Profile implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 }
