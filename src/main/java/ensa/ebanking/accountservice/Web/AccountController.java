@@ -1,11 +1,12 @@
 package ensa.ebanking.accountservice.Web;
 
 
-import ensa.ebanking.accountservice.Service.AccountService;
+import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
+import ensa.ebanking.accountservice.Services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("api/account/")
 @RestController
 class AccountController {
 
@@ -19,5 +20,10 @@ class AccountController {
     @GetMapping("/hello-world")
     String test() {
         return "Hello World!";
+    }
+
+    @PostMapping("/register")
+    public void registerClient(@RequestBody ClientProfileDTO cpdto) {
+        accountService.registerClient(cpdto);
     }
 }
