@@ -1,7 +1,7 @@
-package ensa.ebanking.accountservice.security;
+package ensa.ebanking.accountservice.Security;
 
-import ensa.ebanking.accountservice.filter.CustomAuthenticationFilter;
-import ensa.ebanking.accountservice.filter.CustomAuthorizationFilter;
+import ensa.ebanking.accountservice.Filters.CustomAuthenticationFilter;
+import ensa.ebanking.accountservice.Filters.CustomAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
