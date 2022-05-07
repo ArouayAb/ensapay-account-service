@@ -3,8 +3,8 @@ package ensa.ebanking.accountservice.Enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    ROLE_CLIENT("CLIENT"),
-    ROLE_AGENT("AGENT");
+    CLIENT("ROLE_CLIENT"),
+    AGENT("ROLE_AGENT");
 
     public final String name;
 

@@ -66,11 +66,11 @@ public class User implements Serializable {
 
         if(profile instanceof ClientProfile) {
             this.clientProfile = (ClientProfile) profile;
-            this.role = Role.ROLE_CLIENT;
+            this.role = Role.CLIENT;
         }
         else if(profile instanceof AgentProfile){
             this.agentProfile = (AgentProfile) profile;
-            this.role = Role.ROLE_AGENT;
+            this.role = Role.AGENT;
         }
     }
 
