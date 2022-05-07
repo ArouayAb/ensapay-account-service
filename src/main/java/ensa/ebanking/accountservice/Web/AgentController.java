@@ -18,11 +18,17 @@ public class AgentController {
         this.agentService=agentService;
     }
 
-    @PostMapping("/active-Account")
-    public Profile activation(@RequestBody Profile profile){
-        return agentService.validAccount(profile.getId());
+    @GetMapping("/activate-account")
+    @ResponseBody
+    public Profile activation(@RequestParam(name="id") Long id){
+        return agentService.validAccount(id);
     }
-    @GetMapping("/inactive-Accounts")
+    @GetMapping("/reject-account")
+
+    public void reject(@RequestParam(name="id") Long id){
+         agentService.rejectAccount(id);
+    }
+    @GetMapping("/inactive-accounts")
     @ResponseBody
     public List<Profile> listOfInactiveAccounts(){
         return agentService.InvalideAccounts();
