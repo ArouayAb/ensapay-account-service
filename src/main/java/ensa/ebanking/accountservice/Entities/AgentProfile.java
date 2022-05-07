@@ -1,7 +1,7 @@
 package ensa.ebanking.accountservice.Entities;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -17,11 +17,35 @@ public class AgentProfile extends Profile{
     private String patenteNumber;
     private String commerceRegisterImm;
 
-    public AgentProfile() {
-    }
-
     @OneToMany(mappedBy = "agentProfile")
     private List<Attachment> attachmentList;
+
+    public AgentProfile(
+            String name,
+            String surname,
+            String email,
+            String cin_url,
+            String cin,
+            Date birthdate,
+            String address,
+            String patenteNumber,
+            String commerceRegisterImm,
+            List<Attachment> attachmentList)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.cin_url = cin_url;
+        this.cin = cin;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.patenteNumber = patenteNumber;
+        this.commerceRegisterImm = commerceRegisterImm;
+        this.attachmentList = attachmentList;
+    }
+
+    public AgentProfile() {
+    }
 
     @Override
     public Long getId() {
