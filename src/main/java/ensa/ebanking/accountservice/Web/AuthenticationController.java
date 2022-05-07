@@ -49,7 +49,7 @@ public class AuthenticationController {
                 String phoneNumber = decodedJWT.getSubject();
                 User user = clientService.getClient(phoneNumber);
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name));
+                authorities.add(new SimpleGrantedAuthority(user.getRole().name));
                 String access_token = JWT.create()
                         .withSubject(user.getPhoneNumber())
                         .withExpiresAt(new Date(System.currentTimeMillis() + JWTUtil.EXPIRATION_ACCESS_TOKEN))
