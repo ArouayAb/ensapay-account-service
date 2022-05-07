@@ -1,6 +1,7 @@
 package ensa.ebanking.accountservice.Entities;
 
 import ensa.ebanking.accountservice.Enums.ProductType;
+import ensa.ebanking.accountservice.Enums.ProfileStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -30,14 +31,27 @@ public class Profile implements Serializable {
     @Email
     private String email;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ProfileStatus profileStatus=ProfileStatus.INACTIVE;
+
+
     public Profile() {
     }
 
-    public Profile( ProductType productType, String name, String surname, String email) {
+    public Profile(ProductType productType, String name, String surname, String email) {
         this.productType = productType;
         this.name = name;
         this.surname = surname;
         this.email = email;
+    }
+
+    public ProfileStatus getProfileStatus() {
+        return profileStatus;
+    }
+
+    public void setProfileStatus(ProfileStatus profileStatus) {
+        this.profileStatus = profileStatus;
     }
 
     public Long getId() {

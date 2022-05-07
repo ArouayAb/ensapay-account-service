@@ -1,6 +1,7 @@
 package ensa.ebanking.accountservice.DTO;
 
 import ensa.ebanking.accountservice.Enums.ProductType;
+import ensa.ebanking.accountservice.Enums.ProfileStatus;
 
 public class ClientProfileDTO {
     private ProductType productType;
@@ -59,4 +60,6 @@ public class ClientProfileDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }
