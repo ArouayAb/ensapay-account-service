@@ -1,14 +1,27 @@
 package ensa.ebanking.accountservice.Services;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import ensa.ebanking.accountservice.DAO.UserDAO;
 import ensa.ebanking.accountservice.DAO.ProfileDAO;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
+import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import net.bytebuddy.utility.RandomString;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service
 public class ClientService {
@@ -46,4 +59,25 @@ public class ClientService {
         return userDAO.findByPhoneNumber(phoneNumber);
     }
 
+    public void changePassword(HttpServletRequest request, HttpServletResponse response, String json) throws IOException {
+        String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
+        if (authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
+            String token = authorizationHeader.substring(JWTUtil.PREFIX.length());
+            Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            try {
+                DecodedJWT decodedJWT = verifier.verify(token);
+                String phoneNumber = decodedJWT.getSubject();
+                User user = userDAO.findByPhoneNumber(phoneNumber);
+                String password = (String) new JSONObject(json).get("password");
+                System.out.println(password);
+                user.setPassword(this.passwordEncoder.encode(password));
+                userDAO.save(user);
+            } catch (Exception e) {
+                response.sendError(FORBIDDEN.value());
+            }
+        } else {
+            response.sendError(FORBIDDEN.value());
+        }
+    }
 }
