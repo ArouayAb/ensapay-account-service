@@ -23,6 +23,8 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private boolean isFirstLogin;
+
     @OneToOne
     private AgentProfile agentProfile;
 
@@ -44,6 +46,14 @@ public class User implements Serializable {
     public User() {
     }
 
+    public boolean isFirstLogin() {
+        return isFirstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        isFirstLogin = firstLogin;
+    }
+
     public AgentProfile getAgentProfile() {
         return agentProfile;
     }
@@ -60,9 +70,10 @@ public class User implements Serializable {
         this.clientProfile = clientProfile;
     }
 
-    public User(String phoneNumber, String password, Profile profile) {
+    public User(String phoneNumber, String password, Profile profile, boolean isFirstLogin) {
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.isFirstLogin = isFirstLogin;
 
         if(profile instanceof ClientProfile) {
             this.clientProfile = (ClientProfile) profile;

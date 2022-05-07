@@ -47,10 +47,10 @@ public class ClientService {
     public void registerClient(ClientProfileDTO cpdto) {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
-        System.out.println(generatedPassword);
+        System.out.println("Client password: " + generatedPassword);
 
         ClientProfile clientProfile = new ClientProfile(cpdto.getProductType(), cpdto.getName(), cpdto.getSurname(), cpdto.getEmail());
-        User client = new User(cpdto.getPhone(), encodedPassword, clientProfile);
+        User client = new User(cpdto.getPhone(), encodedPassword, clientProfile, true);
 
         profileDAO.save(clientProfile);
         userDAO.save(client);
@@ -60,10 +60,12 @@ public class ClientService {
         return userDAO.findByPhoneNumber(phoneNumber);
     }
 
-    public void changePassword(String json, Principal principal) {
-            User user = userDAO.findByPhoneNumber(principal.getName());
+    public void changePassword(String json, String phoneNumber) {
+            User user = userDAO.findByPhoneNumber(phoneNumber);
             String password = (String) new JSONObject(json).get("password");
             user.setPassword(this.passwordEncoder.encode(password));
+            if (user.isFirstLogin()) user.setFirstLogin(false);
             userDAO.save(user);
     }
+
 }

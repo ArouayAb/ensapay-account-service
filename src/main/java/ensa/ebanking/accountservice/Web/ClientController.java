@@ -6,9 +6,11 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
+import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Services.ClientService;
 import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,9 +39,10 @@ class ClientController {
     }
 
     @GetMapping("/currentUser")
-    String test(Principal principal) {
-        String info = principal.getName();
-        return info;
+    ResponseEntity<User> test(Principal principal) {
+        User client = clientService.getClient(principal.getName());
+        if (client.isFirstLogin()) return ResponseEntity.status(FORBIDDEN).build();
+        return ResponseEntity.ok(client);
     }
 
     @PostMapping("/register")
@@ -48,8 +51,8 @@ class ClientController {
     }
 
     @PutMapping("/change-password")
-    public void changePassword(@RequestBody String json, Principal principal) throws IOException {
-        clientService.changePassword(json, principal);
+    public void changePassword(@RequestBody String json, Principal principal) {
+        clientService.changePassword(json, principal.getName());
     }
 
 }

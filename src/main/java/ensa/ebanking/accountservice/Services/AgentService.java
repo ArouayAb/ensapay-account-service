@@ -25,7 +25,7 @@ public class AgentService {
     public void registerAgent(AgentProfileDTO apdto) {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
-        System.out.println(generatedPassword);
+        System.out.println("Agent password: " + generatedPassword);
 
         AgentProfile agentProfile = new AgentProfile(
                 apdto.getName(),
@@ -39,7 +39,7 @@ public class AgentService {
                 apdto.getCommerceRegisterImm(),
                 apdto.getAttachmentList()
         );
-        User agent = new User(apdto.getPhone(), encodedPassword, agentProfile);
+        User agent = new User(apdto.getPhone(), encodedPassword, agentProfile, true);
 
         profileDAO.save(agentProfile);
         userDAO.save(agent);
