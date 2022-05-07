@@ -1,43 +1,31 @@
 package ensa.ebanking.accountservice.Entities;
 
 import ensa.ebanking.accountservice.Enums.ProductType;
+import ensa.ebanking.accountservice.Enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.List;
 
-@Entity
+@MappedSuperclass
 public class Profile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ProductType productType;
+    @NotEmpty
+    protected String name;
 
     @NotEmpty
-    private String name;
-
-    @NotEmpty
-    private String surname;
+    protected String surname;
 
     @Email
-    private String email;
+    protected String email;
 
     public Profile() {
-    }
-
-    public Profile( ProductType productType, String name, String surname, String email) {
-        this.productType = productType;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
     }
 
     public Long getId() {
@@ -46,14 +34,6 @@ public class Profile implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
     }
 
     public String getName() {

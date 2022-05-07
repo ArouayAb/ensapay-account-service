@@ -52,7 +52,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             e.printStackTrace();
         }
 
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phoneNumber, password);
         return authenticationManager.authenticate(authenticationToken);
     }

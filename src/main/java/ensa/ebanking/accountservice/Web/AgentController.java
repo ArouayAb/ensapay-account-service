@@ -1,20 +1,22 @@
 package ensa.ebanking.accountservice.Web;
 
 
+import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
+import ensa.ebanking.accountservice.Services.AgentService;
 import ensa.ebanking.accountservice.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/account/client")
+@RequestMapping("api/account/agent")
 @RestController
-class ClientController {
+class AgentController {
 
-    private ClientService clientService;
+    private AgentService agentService;
 
     @Autowired
-    public void setAccountService(ClientService accountService) {
-        this.clientService = accountService;
+    public void setAccountService(AgentService agentService) {
+        this.agentService = agentService;
     }
 
     @GetMapping("/hello-world")
@@ -23,8 +25,8 @@ class ClientController {
     }
 
     @PostMapping("/register")
-    public void registerClient(@RequestBody ClientProfileDTO cpdto) {
-        clientService.registerClient(cpdto);
+    public void registerAgent(@RequestBody AgentProfileDTO apdto) {
+        agentService.registerAgent(apdto);
     }
 
 }
