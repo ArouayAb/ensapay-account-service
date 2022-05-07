@@ -8,6 +8,8 @@ import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Services.ClientService;
 import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
@@ -41,12 +47,14 @@ public class AuthenticationController {
             try {
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
                 String phoneNumber = decodedJWT.getSubject();
-                User client = clientService.getClient(phoneNumber);
+                User user = clientService.getClient(phoneNumber);
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name));
                 String access_token = JWT.create()
-                        .withSubject(client.getPhoneNumber())
+                        .withSubject(user.getPhoneNumber())
                         .withExpiresAt(new Date(System.currentTimeMillis() + JWTUtil.EXPIRATION_ACCESS_TOKEN))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("phoneNumber", client.getPhoneNumber())
+                        .withClaim("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 response.setHeader("access_token", access_token);
