@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
@@ -59,25 +60,10 @@ public class ClientService {
         return userDAO.findByPhoneNumber(phoneNumber);
     }
 
-    public void changePassword(HttpServletRequest request, HttpServletResponse response, String json) throws IOException {
-        String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
-        if (authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
-            String token = authorizationHeader.substring(JWTUtil.PREFIX.length());
-            Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            try {
-                DecodedJWT decodedJWT = verifier.verify(token);
-                String phoneNumber = decodedJWT.getSubject();
-                User user = userDAO.findByPhoneNumber(phoneNumber);
-                String password = (String) new JSONObject(json).get("password");
-                System.out.println(password);
-                user.setPassword(this.passwordEncoder.encode(password));
-                userDAO.save(user);
-            } catch (Exception e) {
-                response.sendError(FORBIDDEN.value());
-            }
-        } else {
-            response.sendError(FORBIDDEN.value());
-        }
+    public void changePassword(String json, Principal principal) {
+            User user = userDAO.findByPhoneNumber(principal.getName());
+            String password = (String) new JSONObject(json).get("password");
+            user.setPassword(this.passwordEncoder.encode(password));
+            userDAO.save(user);
     }
 }

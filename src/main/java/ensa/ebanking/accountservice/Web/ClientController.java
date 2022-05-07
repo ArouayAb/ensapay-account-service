@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -35,9 +36,10 @@ class ClientController {
         this.clientService = accountService;
     }
 
-    @GetMapping("/hello-world")
-    String test() {
-        return "Hello World!";
+    @GetMapping("/currentUser")
+    String test(Principal principal) {
+        String info = principal.getName();
+        return info;
     }
 
     @PostMapping("/register")
@@ -46,8 +48,8 @@ class ClientController {
     }
 
     @PutMapping("/change-password")
-    public void changePassword(HttpServletRequest request, HttpServletResponse response, @RequestBody String json) throws IOException {
-        clientService.changePassword(request, response, json);
+    public void changePassword(@RequestBody String json, Principal principal) throws IOException {
+        clientService.changePassword(json, principal);
     }
 
 }
