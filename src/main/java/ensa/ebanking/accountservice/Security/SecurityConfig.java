@@ -1,7 +1,11 @@
 package ensa.ebanking.accountservice.Security;
 
+import ensa.ebanking.accountservice.Enums.Role;
 import ensa.ebanking.accountservice.Filters.CustomAuthenticationFilter;
 import ensa.ebanking.accountservice.Filters.CustomAuthorizationFilter;
+import ensa.ebanking.accountservice.Filters.CustomTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,9 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/auth/refresh/**").permitAll();
+        // http.authorizeRequests().antMatchers("/api/account/client/**").hasRole("AGENT");
         http.authorizeRequests().antMatchers("/api/**").authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomTokenFilter(), CustomAuthorizationFilter.class);
     }
 
     @Bean

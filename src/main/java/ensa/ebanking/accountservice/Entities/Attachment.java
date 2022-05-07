@@ -7,19 +7,20 @@ import java.io.Serializable;
 public class Attachment implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String attachmentUrl;
     private String description;
 
     @ManyToOne
-    private Profile profile;
+    private AgentProfile agentProfile;
 
-    public Profile getProfile() {
-        return profile;
+    public AgentProfile getAgentProfile() {
+        return agentProfile;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setAgentProfile(AgentProfile agentProfile) {
+        this.agentProfile = agentProfile;
     }
 
     public void setId(Long id) {
