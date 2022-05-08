@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
@@ -46,10 +47,10 @@ public class ClientService {
     public void registerClient(ClientProfileDTO cpdto) {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
-        System.out.println(generatedPassword);
+        System.out.println("Client password: " + generatedPassword);
 
         ClientProfile clientProfile = new ClientProfile(cpdto.getProductType(), cpdto.getName(), cpdto.getSurname(), cpdto.getEmail());
-        User client = new User(cpdto.getPhone(), encodedPassword, clientProfile);
+        User client = new User(cpdto.getPhone(), encodedPassword, clientProfile, true);
 
         profileDAO.save(clientProfile);
         userDAO.save(client);
@@ -59,25 +60,12 @@ public class ClientService {
         return userDAO.findByPhoneNumber(phoneNumber);
     }
 
-    public void changePassword(HttpServletRequest request, HttpServletResponse response, String json) throws IOException {
-        String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
-        if (authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
-            String token = authorizationHeader.substring(JWTUtil.PREFIX.length());
-            Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            try {
-                DecodedJWT decodedJWT = verifier.verify(token);
-                String phoneNumber = decodedJWT.getSubject();
-                User user = userDAO.findByPhoneNumber(phoneNumber);
-                String password = (String) new JSONObject(json).get("password");
-                System.out.println(password);
-                user.setPassword(this.passwordEncoder.encode(password));
-                userDAO.save(user);
-            } catch (Exception e) {
-                response.sendError(FORBIDDEN.value());
-            }
-        } else {
-            response.sendError(FORBIDDEN.value());
-        }
+    public void changePassword(String json, String phoneNumber) {
+            User user = userDAO.findByPhoneNumber(phoneNumber);
+            String password = (String) new JSONObject(json).get("password");
+            user.setPassword(this.passwordEncoder.encode(password));
+            if (user.isFirstLogin()) user.setFirstLogin(false);
+            userDAO.save(user);
     }
+
 }
