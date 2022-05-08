@@ -26,11 +26,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin
 @RequestMapping("api/account/agent")
 @RestController
 class AgentController {
-
     private AgentService agentService;
 
     @Autowired

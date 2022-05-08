@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-@CrossOrigin
 @RequestMapping("api/account/client")
 @RestController
 class ClientController {

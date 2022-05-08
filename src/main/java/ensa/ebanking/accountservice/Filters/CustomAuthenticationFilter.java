@@ -45,7 +45,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             throw new RuntimeException(e);
         }
 
-
         String phoneNumber = null;
         String password = null;
         try {
@@ -53,6 +52,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             password = (String) new JSONObject(requestBody).get("password");
         } catch (JSONException e){
             e.printStackTrace();
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(null, null));
         }
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phoneNumber, password);
