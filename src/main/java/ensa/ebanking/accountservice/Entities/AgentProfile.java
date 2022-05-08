@@ -9,13 +9,14 @@ public class AgentProfile extends Profile{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String cin_url;
+    private String cin_url_verso;
+    private String cin_url_recto;
     private String cin;
     private Date birthdate;
     private String address;
     private String patenteNumber;
     private String commerceRegisterImm;
+
 
     @OneToMany(mappedBy = "agentProfile", fetch = FetchType.EAGER)
     private List<Attachment> attachmentList;
@@ -24,7 +25,8 @@ public class AgentProfile extends Profile{
             String name,
             String surname,
             String email,
-            String cin_url,
+            String cin_url_recto,
+            String cin_url_verso,
             String cin,
             Date birthdate,
             String address,
@@ -35,13 +37,14 @@ public class AgentProfile extends Profile{
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.cin_url = cin_url;
+        this.cin_url_recto = cin_url_recto;
         this.cin = cin;
         this.birthdate = birthdate;
         this.address = address;
         this.patenteNumber = patenteNumber;
         this.commerceRegisterImm = commerceRegisterImm;
         this.attachmentList = attachmentList;
+        this.cin_url_verso=cin_url_verso;
     }
 
     public AgentProfile() {
@@ -57,12 +60,20 @@ public class AgentProfile extends Profile{
         this.id = id;
     }
 
-    public String getCin_url() {
-        return cin_url;
+    public String getCin_url_recto() {
+        return cin_url_recto;
     }
 
     public void setCin_url(String cin_url) {
-        this.cin_url = cin_url;
+        this.cin_url_recto = cin_url_recto;
+    }
+
+    public String getCin_url_verso() {
+        return cin_url_verso;
+    }
+
+    public void setCin_url_verso(String cin_url_verso) {
+        this.cin_url_verso = cin_url_verso;
     }
 
     public String getCin() {

@@ -43,6 +43,7 @@ public class AccountServiceApplication {
 							"0999888777",
 							"agentEmail1@email.com",
 							null,
+							null,
 							"EE123465",
 							Date.valueOf(LocalDate.of(1990, 5, 30)),
 							"addressField1 addressField2 addressField3",
