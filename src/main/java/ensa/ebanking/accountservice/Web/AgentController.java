@@ -8,6 +8,7 @@ import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.Profile;
 
+import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Services.AgentService;
 import ensa.ebanking.accountservice.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,17 +69,13 @@ class AgentController {
         agentService.registerAgent(apdto);
     }
 
-    @PostMapping("/activate-account")
+    @PutMapping("/activate-account")
     @ResponseBody
-    public Profile activation(@RequestBody String json){
-        return agentService.validAccount(json);
-    }
+    public ClientProfile activate(@RequestBody ClientProfile clientProfile){return agentService.validAccount(clientProfile);}
 
-    @PostMapping("/reject-account")
-    public void reject(@RequestBody String json){
-        System.out.println(json);
-        agentService.rejectAccount(json);
-    }
+    @PutMapping("/reject-account")
+    public ClientProfile reject(@RequestBody ClientProfile clientProfile){return agentService.rejectAccount(clientProfile);}
+
     @GetMapping("/inactive-accounts")
     @ResponseBody
     public List<ClientProfile> listOfInactiveAccounts(){

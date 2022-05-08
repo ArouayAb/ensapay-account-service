@@ -54,4 +54,16 @@ public class ClientProfile extends Profile{
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
     }
+
+    @Override
+    public String toString() {
+        return "ClientProfile{" +
+                "id=" + id +
+                ", productType=" + productType +
+                ", accountStatus=" + accountStatus +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -5,6 +5,7 @@ import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Enums.ProductType;
 import ensa.ebanking.accountservice.Services.AgentService;
 import ensa.ebanking.accountservice.Services.ClientService;
+import ensa.ebanking.accountservice.Services.EmailSenderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,15 +25,17 @@ public class AccountServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(ClientService clientService, AgentService agentService) {
+	CommandLineRunner run(ClientService clientService, AgentService agentService, EmailSenderService emailSenderService) {
 		return args -> {
+//			emailSenderService.sendEmail("a.annahir@gmail.com","test subject", "test body");
+
 			clientService.registerClient(
 					new ClientProfileDTO(
 							ProductType.HSSAB1,
 							"clientName1",
 							"clientSurname1",
 							"0111222333",
-							"clientEmail1@email.com"
+							"a.annahir@gmail.com"
 					)
 			);
 
@@ -52,8 +55,8 @@ public class AccountServiceApplication {
 							null
 					)
 			);
-			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
-			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));
+//			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
+//			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));
 
 		};
 	}
