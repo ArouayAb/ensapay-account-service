@@ -14,7 +14,5 @@ public interface ClientProfileDAO extends JpaRepository<ClientProfile, Long> {
 
     List<ClientProfile> findClientProfileByAccountStatus(AccountStatus inactive);
 
-    ClientProfile findClientProfileById(long id);
-
     void deleteClientProfileById(long id);
 }
