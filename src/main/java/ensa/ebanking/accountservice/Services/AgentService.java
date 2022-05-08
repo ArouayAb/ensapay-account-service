@@ -11,10 +11,13 @@ import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgentService {
@@ -22,12 +25,14 @@ public class AgentService {
     private final ClientProfileDAO clientProfileDAO;
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
+    private final EmailSenderService emailSenderService;
 
-    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO) {
+    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailSenderService emailSenderService) {
         this.agentProfileDAO = agentProfileDAO;
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
         this.clientProfileDAO = clientProfileDAO;
+        this.emailSenderService = emailSenderService;
     }
 
     public void registerAgent(AgentProfileDTO apdto) {
@@ -57,24 +62,50 @@ public class AgentService {
         return clientProfileDAO.findClientProfileByAccountStatus(AccountStatus.INACTIVE);
     }
 
-    public ClientProfile validAccount (String json){
+    public ClientProfile validAccount (ClientProfile clientProfile){
         try {
-            int id = (Integer) new JSONObject(json).get("id");
-            ClientProfile profile = clientProfileDAO.findClientProfileById(id);
-            profile.setAccountStatus(AccountStatus.ACTIVE);
-            return clientProfileDAO.save(profile);
+            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(clientProfile.getId());
+            if (optionalClientProfile.isPresent()) {
+                ClientProfile client = optionalClientProfile.get();
+                String email = client.getEmail();
+                client.setAccountStatus(AccountStatus.ACTIVE);
+                String subject = "Validation de votre compte";
+                String body = "Nous sommes ravis de vous informer que votre demande a été validée. Vous pouvez désormais " +
+                        "bénéficier des services de ENSAPAY.";
+                this.emailSenderService.sendEmail(email, subject, body);
+                return clientProfileDAO.save(client);
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
 
         } catch (Exception e) {
-            System.out.println("account not found");
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return null;
     }
 
-    public void rejectAccount (String json){
-        int id = (Integer) new JSONObject(json).get("id");
-
-        userDAO.deleteClientById((long) id);
-        clientProfileDAO.deleteClientProfileById(id);
-        System.out.println("account with id " + id + " is deleted");
+    public ClientProfile rejectAccount (ClientProfile clientProfile){
+        try {
+            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(clientProfile.getId());
+            if (optionalClientProfile.isPresent()) {
+                ClientProfile client = optionalClientProfile.get();
+                String email = client.getEmail();
+                client.setAccountStatus(AccountStatus.REJECTED);
+                String subject = "Validation de votre compte";
+                String body = "Nous sommes désolés de vous informer que votre demande a été rejetée. Il semble que certaines " +
+                        "de vos informations sont invalides.";
+                this.emailSenderService.sendEmail(email, subject, body);
+                emailSenderService.sendEmail(email, subject, body);
+                System.out.println();
+                return clientProfileDAO.save(client);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
+
 }
