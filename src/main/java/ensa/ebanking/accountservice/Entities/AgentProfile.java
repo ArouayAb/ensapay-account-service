@@ -17,7 +17,7 @@ public class AgentProfile extends Profile{
     private String patenteNumber;
     private String commerceRegisterImm;
 
-    @OneToMany(mappedBy = "agentProfile")
+    @OneToMany(mappedBy = "agentProfile", fetch = FetchType.EAGER)
     private List<Attachment> attachmentList;
 
     public AgentProfile(
