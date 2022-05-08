@@ -1,6 +1,7 @@
 package ensa.ebanking.accountservice.Services;
 
 import ensa.ebanking.accountservice.DAO.UserDAO;
+import ensa.ebanking.accountservice.Entities.CustomUserDetails;
 import ensa.ebanking.accountservice.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,8 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Username not found");
         }
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().name));
-        return new org.springframework.security.core.userdetails.User(user.getPhoneNumber(), user.getPassword(), authorities);
+//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(user.getRole().name));
+//        return new org.springframework.security.core.userdetails.User(user.getPhoneNumber(), user.getPassword(), authorities);
+
+        return new CustomUserDetails(user);
     }
 }

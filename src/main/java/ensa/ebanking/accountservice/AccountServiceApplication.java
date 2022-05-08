@@ -18,7 +18,9 @@ import java.time.LocalDate;
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountServiceApplication.class, args);
+		SpringApplication.run(AccountServiceApplication.class, args
+		);
+
 	}
 
 	@Bean
@@ -49,6 +51,9 @@ public class AccountServiceApplication {
 							null
 					)
 			);
+			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
+			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));
+
 		};
 	}
 

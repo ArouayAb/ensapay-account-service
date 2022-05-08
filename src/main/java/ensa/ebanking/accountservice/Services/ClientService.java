@@ -1,11 +1,7 @@
 package ensa.ebanking.accountservice.Services;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import ensa.ebanking.accountservice.DAO.ClientProfileDAO;
 import ensa.ebanking.accountservice.DAO.UserDAO;
-import ensa.ebanking.accountservice.DAO.ProfileDAO;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
@@ -26,7 +22,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @Service
 public class ClientService {
-    private ProfileDAO profileDAO;
+    private ClientProfileDAO profileDAO;
     private UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
 
@@ -35,7 +31,7 @@ public class ClientService {
     }
 
     @Autowired
-    public void setProfileDAO(ProfileDAO profileDAO) {
+    public void setProfileDAO(ClientProfileDAO profileDAO) {
         this.profileDAO = profileDAO;
     }
 

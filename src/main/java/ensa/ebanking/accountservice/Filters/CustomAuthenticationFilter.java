@@ -2,6 +2,8 @@ package ensa.ebanking.accountservice.Filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import ensa.ebanking.accountservice.Entities.CustomUserDetails;
+import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -59,8 +60,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        User user = (User)authResult.getPrincipal();
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+        CustomUserDetails user = (CustomUserDetails) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
 
         String access_token = JWT.create()
@@ -78,5 +79,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(user.toString());
+        response.getWriter().flush();
     }
 }
