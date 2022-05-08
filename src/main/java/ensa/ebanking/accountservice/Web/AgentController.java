@@ -7,6 +7,7 @@ import ensa.ebanking.accountservice.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,15 +19,16 @@ public class AgentController {
         this.agentService=agentService;
     }
 
-    @GetMapping("/activate-account")
+    @PostMapping("/activate-account")
     @ResponseBody
-    public Profile activation(@RequestParam(name="id") Long id){
-        return agentService.validAccount(id);
+    public Profile activation(@RequestBody String json){
+        return agentService.validAccount(json);
     }
-    @GetMapping("/reject-account")
+    @PostMapping("/reject-account")
 
-    public void reject(@RequestParam(name="id") Long id){
-         agentService.rejectAccount(id);
+    public void reject(@RequestBody String json){
+        System.out.println(json);
+         agentService.rejectAccount(json);
     }
     @GetMapping("/inactive-accounts")
     @ResponseBody

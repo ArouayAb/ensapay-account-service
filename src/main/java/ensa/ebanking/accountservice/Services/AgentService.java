@@ -5,8 +5,10 @@ import ensa.ebanking.accountservice.DAO.ProfileDAO;
 import ensa.ebanking.accountservice.Entities.Client;
 import ensa.ebanking.accountservice.Entities.Profile;
 import ensa.ebanking.accountservice.Enums.ProfileStatus;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Service
@@ -24,11 +26,11 @@ public class AgentService {
         return profileDAO.findProfileByProfileStatus(ProfileStatus.INACTIVE);
     }
 
-    public Profile validAccount(Long id) {
+    public Profile validAccount(String json) {
         try {
-            Profile profile = profileDAO.findProfileById(id);
+            int id=(Integer) new JSONObject(json).get("id");
+            Profile profile = profileDAO.findProfileById(Long.valueOf(id));
             profile.setProfileStatus(ProfileStatus.ACTIVE);
-            System.out.println("test");
             return profileDAO.save(profile);
 
         } catch (Exception e) {
@@ -37,10 +39,12 @@ public class AgentService {
         return null;
     }
 
-    public void rejectAccount(Long id) {
-            clientDAO.deleteClientByProfileId(id);
-            profileDAO.deleteProfileById(id);
-        System.out.println("account with id"+id+"is deleted");
+    public void rejectAccount(String json) {
+            int id=(Integer) new JSONObject(json).get("id");
+
+            clientDAO.deleteClientByProfileId(Long.valueOf(id));
+            profileDAO.deleteProfileById(Long.valueOf(id));
+        System.out.println("account with id "+id+" is deleted");
 
 
     }
