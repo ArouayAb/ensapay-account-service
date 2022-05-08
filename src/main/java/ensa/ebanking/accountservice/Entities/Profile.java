@@ -1,12 +1,8 @@
 package ensa.ebanking.accountservice.Entities;
 
-import ensa.ebanking.accountservice.Enums.ProductType;
-import ensa.ebanking.accountservice.Enums.Role;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @MappedSuperclass
@@ -26,6 +22,12 @@ public class Profile implements Serializable {
     protected String email;
 
     public Profile() {
+    }
+
+    public Profile(String name, String surname, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
     }
 
     public Long getId() {

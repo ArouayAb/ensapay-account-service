@@ -1,6 +1,7 @@
 package ensa.ebanking.accountservice.Entities;
 
 import ensa.ebanking.accountservice.Enums.ProductType;
+import ensa.ebanking.accountservice.Enums.AccountStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,9 @@ public class ClientProfile extends Profile{
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProductType productType;
+
+    @Enumerated(EnumType.STRING)
+    private AccountStatus accountStatus = AccountStatus.INACTIVE;
 
     public ClientProfile(ProductType productType, String name, String surname, String email) {
         this.productType = productType;
@@ -41,5 +45,13 @@ public class ClientProfile extends Profile{
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }
