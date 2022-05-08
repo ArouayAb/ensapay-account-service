@@ -13,7 +13,8 @@ public class AgentProfileDTO {
     private String surname;
     private String phone;
     private String email;
-    private String cinUrl;
+    private String cin_url_recto;
+    private String cin_url_verso;
     private String cin;
     private Date birthdate;
     private String address;
@@ -27,7 +28,8 @@ public class AgentProfileDTO {
             String surname,
             String phone,
             String email,
-            String cinUrl,
+            String cin_url_recto,
+            String cin_url_verso,
             String cin,
             Date birthdate,
             String address,
@@ -39,7 +41,8 @@ public class AgentProfileDTO {
         this.surname = surname;
         this.phone = phone;
         this.email = email;
-        this.cinUrl = cinUrl;
+        this.cin_url_recto=cin_url_recto;
+        this.cin_url_verso=cin_url_verso;
         this.cin = cin;
         this.birthdate = birthdate;
         this.address = address;
@@ -88,12 +91,20 @@ public class AgentProfileDTO {
         this.email = email;
     }
 
-    public String getCinUrl() {
-        return cinUrl;
+    public String getCin_url_recto() {
+        return cin_url_recto;
     }
 
-    public void setCinUrl(String cinUrl) {
-        this.cinUrl = cinUrl;
+    public void setCin_url_recto(String cin_url_recto) {
+        this.cin_url_recto = cin_url_recto;
+    }
+
+    public String getCin_url_verso() {
+        return cin_url_verso;
+    }
+
+    public void setCin_url_verso(String cin_url_verso) {
+        this.cin_url_verso = cin_url_verso;
     }
 
     public String getCin() {
