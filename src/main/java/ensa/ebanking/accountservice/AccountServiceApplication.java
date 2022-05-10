@@ -5,7 +5,7 @@ import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Enums.ProductType;
 import ensa.ebanking.accountservice.Services.AgentService;
 import ensa.ebanking.accountservice.Services.ClientService;
-import ensa.ebanking.accountservice.Services.EmailSenderService;
+import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +25,7 @@ public class AccountServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(ClientService clientService, AgentService agentService, EmailSenderService emailSenderService) {
+	CommandLineRunner run(ClientService clientService, AgentService agentService, EmailHelper emailHelper) {
 		return args -> {
 //			emailSenderService.sendEmail("a.annahir@gmail.com","test subject", "test body");
 

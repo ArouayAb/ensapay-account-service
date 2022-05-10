@@ -1,4 +1,4 @@
-package ensa.ebanking.accountservice.Services;
+package ensa.ebanking.accountservice.Helpers;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class EmailSenderService {
+public class EmailHelper {
 
-    @Autowired
+    public EmailHelper(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     private JavaMailSender mailSender;
 
     public JSONObject parseJsonFile(String path) {

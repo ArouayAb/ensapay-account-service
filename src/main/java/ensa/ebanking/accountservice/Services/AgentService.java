@@ -8,6 +8,7 @@ import ensa.ebanking.accountservice.Entities.AgentProfile;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
+import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -24,22 +25,22 @@ public class AgentService {
     private final ClientProfileDAO clientProfileDAO;
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
-    private final EmailSenderService emailSenderService;
+    private final EmailHelper emailHelper;
 
-    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailSenderService emailSenderService) {
+    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper) {
         this.agentProfileDAO = agentProfileDAO;
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
         this.clientProfileDAO = clientProfileDAO;
-        this.emailSenderService = emailSenderService;
+        this.emailHelper = emailHelper;
     }
 
     public void registerAgent(AgentProfileDTO apdto) {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
         System.out.println("Agent password: " + generatedPassword);
-        JSONObject email = this.emailSenderService.parseJsonFile("EmailDictionary.json");
-        this.emailSenderService.sendEmail(apdto.getEmail(),
+        JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
+        this.emailHelper.sendEmail(apdto.getEmail(),
                 email.getJSONObject("subject").getString("creation"),
                 email.getJSONObject("body").getString("creation") + generatedPassword);
         AgentProfile agentProfile = new AgentProfile(
@@ -68,12 +69,12 @@ public class AgentService {
     public ClientProfile validAccount (String json){
         Long id = new JSONObject(json).getLong("id");
         try {
-            JSONObject email = this.emailSenderService.parseJsonFile("EmailDictionary.json");
+            JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
             Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
                 client.setAccountStatus(AccountStatus.ACTIVE);
-                this.emailSenderService.sendEmail(client.getEmail(),
+                this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("validation"),
                         email.getJSONObject("body").getString("validation"));
                 return clientProfileDAO.save(client);
@@ -91,11 +92,11 @@ public class AgentService {
     public void rejectAccount (String json){
         Long id = new JSONObject(json).getLong("id");
         try {
-            JSONObject email = this.emailSenderService.parseJsonFile("EmailDictionary.json");
+            JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
             Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
-                this.emailSenderService.sendEmail(client.getEmail(),
+                this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("rejection"),
                         email.getJSONObject("body").getString("rejection"));
                 userDAO.deleteClientById(id);
