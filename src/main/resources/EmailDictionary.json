@@ -1,0 +1,12 @@
+{
+  "subject": {
+    "creation": "Création de votre compte",
+    "validation": "Validation de votre compte",
+    "rejection": "Réjection de votre compte"
+  },
+  "body": {
+    "creation": "La création de votre compte a été éffectuée avec succés. Voici votre mot de passe : ",
+    "validation": "Nous sommes ravis de vous informer que votre demande a été validée. Vous pouvez désormais bénéficier des services de ENSAPAY.",
+    "rejection": "Nous sommes désolés de vous informer que votre demande a été rejetée. Il semble que certaines de vos informations sont invalides."
+  }
+}

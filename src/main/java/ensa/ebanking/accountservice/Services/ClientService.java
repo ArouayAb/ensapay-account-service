@@ -24,10 +24,12 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class ClientService {
     private ClientProfileDAO profileDAO;
     private UserDAO userDAO;
+    private EmailSenderService emailSenderService;
     private final PasswordEncoder passwordEncoder;
 
-    public ClientService(PasswordEncoder passwordEncoder) {
+    public ClientService(PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
         this.passwordEncoder = passwordEncoder;
+        this.emailSenderService = emailSenderService;
     }
 
     @Autowired
@@ -44,7 +46,10 @@ public class ClientService {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
         System.out.println("Client password: " + generatedPassword);
-
+            JSONObject email = this.emailSenderService.parseJsonFile("EmailDictionary.json");
+            this.emailSenderService.sendEmail(cpdto.getEmail(),
+                    email.getJSONObject("subject").getString("creation"),
+                    email.getJSONObject("body").getString("creation") + generatedPassword);
         ClientProfile clientProfile = new ClientProfile(cpdto.getProductType(), cpdto.getName(), cpdto.getSurname(), cpdto.getEmail());
         User client = new User(cpdto.getPhone(), encodedPassword, clientProfile, true);
 

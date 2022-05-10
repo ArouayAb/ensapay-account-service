@@ -35,7 +35,7 @@ public class AccountServiceApplication {
 							"clientName1",
 							"clientSurname1",
 							"0111222333",
-							"a.annahir@gmail.com"
+							"clientEmail1@gmail.com"
 					)
 			);
 
