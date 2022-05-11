@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -78,6 +79,11 @@ class AgentController {
     @ResponseBody
     public List<ClientProfile> listOfInactiveAccounts(){
         return agentService.invalideAccounts();
+    }
+
+    @PutMapping("/change-password")
+    public void changePassword(@RequestBody String json, Principal principal) {
+        agentService.changePassword(json, principal.getName());
     }
 
 }
