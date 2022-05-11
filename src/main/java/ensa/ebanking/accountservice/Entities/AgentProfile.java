@@ -17,10 +17,6 @@ public class AgentProfile extends Profile{
     private String patenteNumber;
     private String commerceRegisterImm;
 
-
-    @OneToMany(mappedBy = "agentProfile", fetch = FetchType.EAGER)
-    private List<Attachment> attachmentList;
-
     public AgentProfile(
             String name,
             String surname,
@@ -31,8 +27,7 @@ public class AgentProfile extends Profile{
             Date birthdate,
             String address,
             String patenteNumber,
-            String commerceRegisterImm,
-            List<Attachment> attachmentList)
+            String commerceRegisterImm)
     {
         this.name = name;
         this.surname = surname;
@@ -43,7 +38,6 @@ public class AgentProfile extends Profile{
         this.address = address;
         this.patenteNumber = patenteNumber;
         this.commerceRegisterImm = commerceRegisterImm;
-        this.attachmentList = attachmentList;
         this.cin_url_verso=cin_url_verso;
     }
 
@@ -116,11 +110,4 @@ public class AgentProfile extends Profile{
         this.commerceRegisterImm = commerceRegisterImm;
     }
 
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
-    }
-
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
-    }
 }
