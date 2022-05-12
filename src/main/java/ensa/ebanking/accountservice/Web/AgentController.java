@@ -69,10 +69,10 @@ class AgentController {
 
     @PutMapping("/activate-account")
     @ResponseBody
-    public ClientProfile activate(@RequestBody ClientProfile clientProfile){return agentService.validAccount(clientProfile);}
+    public ClientProfile activate(@RequestBody String json){return agentService.validAccount(json);}
 
     @PutMapping("/reject-account")
-    public ClientProfile reject(@RequestBody ClientProfile clientProfile){return agentService.rejectAccount(clientProfile);}
+    public void reject(@RequestBody String json){agentService.rejectAccount(json);}
 
     @GetMapping("/inactive-accounts")
     @ResponseBody
