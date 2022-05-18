@@ -53,8 +53,7 @@ public class AgentService {
                 apdto.getBirthdate(),
                 apdto.getAddress(),
                 apdto.getPatenteNumber(),
-                apdto.getCommerceRegisterImm(),
-                apdto.getAttachmentList()
+                apdto.getCommerceRegisterImm()
         );
         User agent = new User(apdto.getPhone(), encodedPassword, agentProfile, true);
 

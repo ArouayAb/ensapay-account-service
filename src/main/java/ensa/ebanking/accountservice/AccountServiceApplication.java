@@ -51,8 +51,7 @@ public class AccountServiceApplication {
 							Date.valueOf(LocalDate.of(1990, 5, 30)),
 							"addressField1 addressField2 addressField3",
 							"0000/11111111",
-							"01234567",
-							null
+							"01234567"
 					)
 			);
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));

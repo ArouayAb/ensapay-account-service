@@ -1,6 +1,5 @@
 package ensa.ebanking.accountservice.DTO;
 
-import ensa.ebanking.accountservice.Entities.Attachment;
 import ensa.ebanking.accountservice.Enums.ProductType;
 
 import javax.persistence.OneToMany;
@@ -21,8 +20,6 @@ public class AgentProfileDTO {
     private String patenteNumber;
     private String commerceRegisterImm;
 
-    private List<Attachment> attachmentList;
-
     public AgentProfileDTO(
             String name,
             String surname,
@@ -34,8 +31,7 @@ public class AgentProfileDTO {
             Date birthdate,
             String address,
             String patenteNumber,
-            String commerceRegisterImm,
-            List<Attachment> attachmentList)
+            String commerceRegisterImm)
     {
         this.name = name;
         this.surname = surname;
@@ -48,15 +44,6 @@ public class AgentProfileDTO {
         this.address = address;
         this.patenteNumber = patenteNumber;
         this.commerceRegisterImm = commerceRegisterImm;
-        this.attachmentList = attachmentList;
-    }
-
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
-    }
-
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
     }
 
     public String getName() {
