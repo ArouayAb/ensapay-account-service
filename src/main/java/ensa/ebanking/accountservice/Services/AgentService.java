@@ -111,4 +111,12 @@ public class AgentService {
         }
     }
 
+    public void changePassword(String json, String phoneNumber) {
+        User user = userDAO.findByPhoneNumber(phoneNumber);
+        String password = (String) new JSONObject(json).get("password");
+        user.setPassword(this.passwordEncoder.encode(password));
+        if (user.isFirstLogin()) user.setFirstLogin(false);
+        userDAO.save(user);
+    }
+
 }
