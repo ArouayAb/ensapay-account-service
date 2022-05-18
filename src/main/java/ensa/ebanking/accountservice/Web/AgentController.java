@@ -51,7 +51,6 @@ class AgentController {
 
         String uploadDir="./cin/"+apdto.getCin();
 
-
         Path uploadPath= Paths.get(uploadDir);
         if(!Files.exists(uploadPath)){
             Files.createDirectories(uploadPath);
