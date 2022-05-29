@@ -7,4 +7,8 @@ public class JWTUtil {
     public static final long EXPIRATION_ACCESS_TOKEN = 60 * 60 * 1000;
     public static final long EXPIRATION_REFRESH_TOKEN = 120 * 60 * 1000;
 
+    // ACCESS TOKEN AND REFRESH TOKEN MUST BE LESS THANK 1 MINUTE FOR THE ADMIN SIDE :
+    public static final long EXPIRATION_ADMIN_ACCESS_TOKEN = 5 * 60 * 1000;
+    public static final long EXPIRATION_ADMIN_REFRESH_TOKEN = 15 * 60 * 1000;
+
 }

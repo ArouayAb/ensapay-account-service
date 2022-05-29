@@ -29,6 +29,9 @@ public class User implements Serializable {
     private AgentProfile agentProfile;
 
     @OneToOne
+    private AdminProfile adminProfile;
+
+    @OneToOne
     private ClientProfile clientProfile;
 
     public Role getRole() {
@@ -62,6 +65,14 @@ public class User implements Serializable {
         this.agentProfile = agentProfile;
     }
 
+    public AdminProfile getAdminProfile() {
+        return adminProfile;
+    }
+
+    public void setAdminProfile(AdminProfile adminProfile) {
+        this.adminProfile = adminProfile;
+    }
+
     public ClientProfile getClientProfile() {
         return clientProfile;
     }
@@ -82,6 +93,10 @@ public class User implements Serializable {
         else if(profile instanceof AgentProfile){
             this.agentProfile = (AgentProfile) profile;
             this.role = Role.AGENT;
+
+        } else if(profile instanceof AdminProfile){
+            this.adminProfile = (AdminProfile) profile;
+            this.role = Role.ADMIN;
         }
     }
 

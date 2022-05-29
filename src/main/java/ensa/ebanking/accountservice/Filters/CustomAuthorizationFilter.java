@@ -24,15 +24,23 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/auth/refresh")) {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+
+        if( request.getServletPath().equals("/api/login")
+                || request.getServletPath().equals("/api/auth/refresh") ) {
+
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(JWTUtil.AUTH_HEADER);
             if(authorizationHeader != null && authorizationHeader.startsWith(JWTUtil.PREFIX)) {
+
                 String token = authorizationHeader.substring(JWTUtil.PREFIX.length());
                 Algorithm algorithm = Algorithm.HMAC256(JWTUtil.SECRET.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
+
                 try {
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
@@ -41,7 +49,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception e){
