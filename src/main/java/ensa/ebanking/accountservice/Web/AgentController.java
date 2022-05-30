@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -70,15 +71,20 @@ class AgentController {
 
     @PutMapping("/activate-account")
     @ResponseBody
-    public ClientProfile activate(@RequestBody ClientProfile clientProfile){return agentService.validAccount(clientProfile);}
+    public ClientProfile activate(@RequestBody String json){return agentService.validAccount(json);}
 
     @PutMapping("/reject-account")
-    public ClientProfile reject(@RequestBody ClientProfile clientProfile){return agentService.rejectAccount(clientProfile);}
+    public void reject(@RequestBody String json){agentService.rejectAccount(json);}
 
     @GetMapping("/inactive-accounts")
     @ResponseBody
     public List<ClientProfile> listOfInactiveAccounts(){
         return agentService.invalideAccounts();
+    }
+
+    @PutMapping("/change-password")
+    public void changePassword(@RequestBody String json, Principal principal) {
+        agentService.changePassword(json, principal.getName());
     }
 
 }

@@ -6,9 +6,9 @@ import ensa.ebanking.accountservice.DAO.UserDAO;
 import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
 import ensa.ebanking.accountservice.Entities.AgentProfile;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
-import ensa.ebanking.accountservice.Entities.Profile;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
+import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -25,21 +25,24 @@ public class AgentService {
     private final ClientProfileDAO clientProfileDAO;
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
-    private final EmailSenderService emailSenderService;
+    private final EmailHelper emailHelper;
 
-    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailSenderService emailSenderService) {
+    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper) {
         this.agentProfileDAO = agentProfileDAO;
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
         this.clientProfileDAO = clientProfileDAO;
-        this.emailSenderService = emailSenderService;
+        this.emailHelper = emailHelper;
     }
 
     public void registerAgent(AgentProfileDTO apdto) {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
         System.out.println("Agent password: " + generatedPassword);
-
+        JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
+        this.emailHelper.sendEmail(apdto.getEmail(),
+                email.getJSONObject("subject").getString("creation"),
+                email.getJSONObject("body").getString("creation") + generatedPassword);
         AgentProfile agentProfile = new AgentProfile(
                 apdto.getName(),
                 apdto.getSurname(),
@@ -62,17 +65,17 @@ public class AgentService {
         return clientProfileDAO.findClientProfileByAccountStatus(AccountStatus.INACTIVE);
     }
 
-    public ClientProfile validAccount (ClientProfile clientProfile){
+    public ClientProfile validAccount (String json){
+        Long id = new JSONObject(json).getLong("id");
         try {
-            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(clientProfile.getId());
+            JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
+            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
-                String email = client.getEmail();
                 client.setAccountStatus(AccountStatus.ACTIVE);
-                String subject = "Validation de votre compte";
-                String body = "Nous sommes ravis de vous informer que votre demande a été validée. Vous pouvez désormais " +
-                        "bénéficier des services de ENSAPAY.";
-                this.emailSenderService.sendEmail(email, subject, body);
+                this.emailHelper.sendEmail(client.getEmail(),
+                        email.getJSONObject("subject").getString("validation"),
+                        email.getJSONObject("body").getString("validation"));
                 return clientProfileDAO.save(client);
             }
             else {
@@ -85,27 +88,34 @@ public class AgentService {
         }
     }
 
-    public ClientProfile rejectAccount (ClientProfile clientProfile){
+    public void rejectAccount (String json){
+        Long id = new JSONObject(json).getLong("id");
         try {
-            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(clientProfile.getId());
+            JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
+            Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
-                String email = client.getEmail();
-                client.setAccountStatus(AccountStatus.REJECTED);
-                String subject = "Validation de votre compte";
-                String body = "Nous sommes désolés de vous informer que votre demande a été rejetée. Il semble que certaines " +
-                        "de vos informations sont invalides.";
-                this.emailSenderService.sendEmail(email, subject, body);
-                emailSenderService.sendEmail(email, subject, body);
-                System.out.println();
-                return clientProfileDAO.save(client);
-            } else {
+                this.emailHelper.sendEmail(client.getEmail(),
+                        email.getJSONObject("subject").getString("rejection"),
+                        email.getJSONObject("body").getString("rejection"));
+                userDAO.deleteClientById(id);
+                clientProfileDAO.deleteClientProfileById(id);
+            }
+            else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public void changePassword(String json, String phoneNumber) {
+        User user = userDAO.findByPhoneNumber(phoneNumber);
+        String password = (String) new JSONObject(json).get("password");
+        user.setPassword(this.passwordEncoder.encode(password));
+        if (user.isFirstLogin()) user.setFirstLogin(false);
+        userDAO.save(user);
     }
 
 }
