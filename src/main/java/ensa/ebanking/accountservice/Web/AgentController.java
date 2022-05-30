@@ -47,16 +47,17 @@ class AgentController {
 
         String fileNameRecto= StringUtils.cleanPath(cinRecto.getOriginalFilename());
         String fileNameVerso= StringUtils.cleanPath(cinVerso.getOriginalFilename());
+
         apdto.setCin_url_recto(apdto.getCin()+"/"+fileNameRecto);
         apdto.setCin_url_verso(apdto.getCin()+"/"+fileNameVerso);
 
         String uploadDir="./cin/"+apdto.getCin();
 
-
         Path uploadPath= Paths.get(uploadDir);
         if(!Files.exists(uploadPath)){
             Files.createDirectories(uploadPath);
         }
+
         InputStream inputStreamRecto=cinRecto.getInputStream();
         InputStream inputStreamVerso=cinVerso.getInputStream();
         Path filePathRecto=uploadPath.resolve(fileNameRecto);
