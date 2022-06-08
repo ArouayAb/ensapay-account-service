@@ -32,9 +32,9 @@ public class AccountServiceApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(ClientService clientService, AgentService agentService, AdminService adminService,EmailSenderService emailSenderService) {
+	CommandLineRunner run(ClientService clientService, AgentService agentService, AdminService adminService, EmailHelper emailHelper) {
 		return args -> {
-			//emailSenderService.sendEmail("a.annahir@gmail.com","test subject", "test body");
+			//emailHelper.sendEmail("a.annahir@gmail.com","test subject", "test body");
 
 
 			//admin password : ensapay@@2022
@@ -48,7 +48,7 @@ public class AccountServiceApplication {
 					"ensapay@@2022"
 			);
 
-			/*clientService.registerClient(
+			clientService.registerClient(
 					new ClientProfileDTO(
 							ProductType.HSSAB1,
 							"clientName1",
@@ -72,7 +72,7 @@ public class AccountServiceApplication {
 							"0000/11111111",
 							"01234567"
 					)
-			);*/
+			);
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));
 
