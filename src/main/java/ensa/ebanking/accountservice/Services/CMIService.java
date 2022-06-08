@@ -11,7 +11,7 @@ public class CMIService {
         BankAccountResponse bankAccountRes = new BankAccountResponse();
         bankAccountRes.setId(bankAccountReq.getId());
         bankAccountRes.setName(bankAccountReq.getName());
-        bankAccountRes.setBalance(bankAccountRes.getBalance());
+        bankAccountRes.setBalance(bankAccountReq.getBalance());
         bankAccountRes.setAccountNumber("0123456789");
         return bankAccountRes;
     }
