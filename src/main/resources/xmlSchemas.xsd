@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://ebanking.ensa/accountservice/Soap/Request"
+           xmlns:tns="http://ebanking.ensa/accountservice/Soap/Request"
+           elementFormDefault="qualified">
+
+    <xsd:element name="BankAccountRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string" />
+                <xsd:element name="name" type="xsd:string" />
+                <xsd:element name="balance" type="xsd:double" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="BankAccountResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="id" type="xsd:string" />
+                <xsd:element name="accountNumber" type="xsd:string" />
+                <xsd:element name="name" type="xsd:string" />
+                <xsd:element name="balance" type="xsd:double" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xs:schema>

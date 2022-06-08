@@ -1,0 +1,7 @@
+<BankAccounts>
+    <bankAccount id="123">
+        <accountNumber>123123</accountNumber>
+        <name>maroc telecom</name>
+        <balance>12.5324</balance>
+    </bankAccount>
+</BankAccounts>

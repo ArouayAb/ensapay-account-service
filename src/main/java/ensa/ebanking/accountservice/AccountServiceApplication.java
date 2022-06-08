@@ -4,10 +4,12 @@ import ensa.ebanking.accountservice.DTO.AdminProfileDTO;
 import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Enums.ProductType;
+import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Services.AdminService;
 import ensa.ebanking.accountservice.Services.AgentService;
 import ensa.ebanking.accountservice.Services.ClientService;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +23,8 @@ import java.time.LocalDate;
 @SpringBootApplication
 public class AccountServiceApplication {
 
+	@Autowired
+	BankAccountHelper bankAccountHelper;
 
 	public static void main(String[] args) {
 
@@ -34,7 +38,9 @@ public class AccountServiceApplication {
 	@Bean
 	CommandLineRunner run(ClientService clientService, AgentService agentService, AdminService adminService, EmailHelper emailHelper) {
 		return args -> {
-			//emailHelper.sendEmail("a.annahir@gmail.com","test subject", "test body");
+//			emailHelper.sendEmail("enter-your-test-mail-here@gmail.com","test subject", "test body");
+
+			bankAccountHelper.addClientAccountToXml("432", "nameefwdsdc", 342D);
 
 
 			//admin password : ensapay@@2022

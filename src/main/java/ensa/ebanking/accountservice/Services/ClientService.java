@@ -38,10 +38,12 @@ public class ClientService {
         String generatedPassword = RandomString.make(10);
         String encodedPassword = this.passwordEncoder.encode(generatedPassword);
         System.out.println("Client password: " + generatedPassword);
-            JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
-            this.emailHelper.sendEmail(cpdto.getEmail(),
-                    email.getJSONObject("subject").getString("creation"),
-                    email.getJSONObject("body").getString("creation") + generatedPassword);
+
+        JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
+        this.emailHelper.sendEmail(cpdto.getEmail(),
+                email.getJSONObject("subject").getString("creation"),
+                email.getJSONObject("body").getString("creation") + generatedPassword);
+
         ClientProfile clientProfile = new ClientProfile(cpdto.getProductType(), cpdto.getName(), cpdto.getSurname(), cpdto.getEmail());
         User client = new User(cpdto.getPhone(), encodedPassword, clientProfile, true);
 
