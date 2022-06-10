@@ -24,13 +24,35 @@ public class Creance {
     @ManyToOne
     private Creancier creancier;
 
-    public Creance(Long code, ClientProfile clientProfile, Creancier creancier) {
+    public Creance(Long code, Date dueDate, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier) {
         this.code = code;
+        this.dueDate = dueDate;
+        this.creanceStatus = creanceStatus;
         this.clientProfile = clientProfile;
         this.creancier = creancier;
     }
 
     public Creance() {
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public CreanceStatus getCreanceStatus() {
+        return creanceStatus;
+    }
+
+    public void setCreanceStatus(CreanceStatus creanceStatus) {
+        this.creanceStatus = creanceStatus;
     }
 
     public Long getCode() {
