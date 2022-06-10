@@ -1,5 +1,7 @@
 package ensa.ebanking.accountservice.Entities;
 
+import ensa.ebanking.accountservice.Enums.CreanceStatus;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -12,6 +14,9 @@ public class Creance {
 
     @NotNull
     private Date dueDate;
+
+    @Enumerated(EnumType.STRING)
+    private CreanceStatus creanceStatus;
 
     @ManyToOne
     private ClientProfile clientProfile;
