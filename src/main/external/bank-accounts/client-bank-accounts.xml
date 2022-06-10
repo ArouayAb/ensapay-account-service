@@ -1,1 +1,12 @@
-<BankAccounts><bankAccount id="123"><accountNumber>123123</accountNumber><name>name</name><balance>12.5324</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount><bankAccount id="432"><accountNumber>123123</accountNumber><name>nameefwdsdc</name><balance>342.0</balance></bankAccount></BankAccounts>
+<BankAccounts>
+    <bankAccount phoneNumber="123">
+        <accountNumber>123123</accountNumber>
+        <name>name</name>
+        <balance>12.5324</balance>
+    </bankAccount>
+    <bankAccount phoneNumber="0612345465">
+        <accountNumber>123123</accountNumber>
+        <name>firstuser</name>
+        <balance>340.0</balance>
+    </bankAccount>
+</BankAccounts>

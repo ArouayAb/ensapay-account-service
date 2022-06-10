@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://ebanking.ensa/accountservice/Soap/Request"
-           xmlns:tns="http://ebanking.ensa/accountservice/Soap/Request"
+           targetNamespace="http://www.ebanking.ensa/accountservice/Soap/Request/AccountCreation/"
+           xmlns:tns="http://www.ebanking.ensa/accountservice/Soap/Request/AccountCreation/"
            elementFormDefault="qualified">
 
-    <xsd:element name="BankAccountRequest">
+    <xsd:element name="AccountCreationRequest">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="id" type="xsd:string" />
+                <xsd:element name="phoneNumber" type="xsd:string" />
                 <xsd:element name="name" type="xsd:string" />
                 <xsd:element name="balance" type="xsd:double" />
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
 
-    <xsd:element name="BankAccountResponse">
+    <xsd:element name="AccountCreationResponse">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="id" type="xsd:string" />
+                <xsd:element name="phoneNumber" type="xsd:string" />
                 <xsd:element name="accountNumber" type="xsd:string" />
                 <xsd:element name="name" type="xsd:string" />
                 <xsd:element name="balance" type="xsd:double" />

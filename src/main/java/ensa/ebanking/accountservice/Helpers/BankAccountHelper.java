@@ -40,17 +40,17 @@ class BankAccounts {
 @JacksonXmlRootElement(localName = "BankAccount")
 class BankAccount {
     @JacksonXmlProperty(isAttribute = true)
-    private String id;
+    private String phoneNumber;
     private String accountNumber;
     private String name;
     private Double balance;
 
-    public String getId() {
-        return id;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPhoneNumber(String id) {
+        this.phoneNumber = id;
     }
 
     public String getAccountNumber() {
@@ -80,8 +80,8 @@ class BankAccount {
     public BankAccount() {
     }
 
-    public BankAccount(String id, String accountNumber, String name, Double balance) {
-        this.id = id;
+    public BankAccount(String phoneNumber, String accountNumber, String name, Double balance) {
+        this.phoneNumber = phoneNumber;
         this.accountNumber = accountNumber;
         this.name = name;
         this.balance = balance;
@@ -100,6 +100,14 @@ public class BankAccountHelper {
     @Value("${bank-accounts.service-file}")
     private String serviceAccountsFile;
 
+
+    public String getClientAccountsFile() {
+        return clientAccountsFile;
+    }
+
+    public String getServiceAccountsFile() {
+        return serviceAccountsFile;
+    }
 
     public BankAccountHelper() {
     }
@@ -129,7 +137,7 @@ public class BankAccountHelper {
         return bankAccounts;
     }
 
-    public void addClientAccountToXml(String id, String name, Double balance) throws IOException {
+    public void addClientAccountToXml(String phoneNumber, String name, Double balance) throws IOException {
         String clientAccountPath = String.valueOf(Paths.get(accountsDirectory, clientAccountsFile));
         String absoluteClientAccountPath = String.valueOf(Paths.get(System.getProperty("user.dir"), "src", "main", "external", clientAccountPath));
 
@@ -139,7 +147,7 @@ public class BankAccountHelper {
                 new FileWriter(String.valueOf(absoluteClientAccountPath))
         );
 
-        BankAccount bankAccount = new BankAccount(id, "123123", name, balance);
+        BankAccount bankAccount = new BankAccount(phoneNumber, "123123", name, balance);
         List<BankAccount> bankAccountList = bankAccounts.getBankAccount();
         bankAccountList.add(bankAccount);
 
@@ -149,5 +157,22 @@ public class BankAccountHelper {
         String xml = xmlMapper.writeValueAsString(bankAccounts);
         bufferedWriter.write(xml);
         bufferedWriter.close();
+    }
+
+    public BankAccount findClientAccount(String phoneNumber) throws IOException {
+        BankAccounts bankAccounts = loadBankAccountsFromXml(clientAccountsFile);
+        List<BankAccount> bankAccountList = bankAccounts.getBankAccount();
+        for (BankAccount bankAccount: bankAccountList) {
+            if(bankAccount.getPhoneNumber().equals(phoneNumber)) {
+                return bankAccount;
+            }
+        }
+        return null;
+    }
+
+    public Double findClientAccountBalance(String phoneNumber) throws IOException {
+        BankAccount bankAccount = findClientAccount(phoneNumber);
+        if(bankAccount == null) return null;
+        return bankAccount.getBalance();
     }
 }

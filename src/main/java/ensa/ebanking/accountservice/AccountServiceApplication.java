@@ -1,8 +1,13 @@
 package ensa.ebanking.accountservice;
 
+import ensa.ebanking.accountservice.DAO.CreancierDAO;
+import ensa.ebanking.accountservice.DAO.ServiceProviderDAO;
 import ensa.ebanking.accountservice.DTO.AdminProfileDTO;
 import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
 import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
+import ensa.ebanking.accountservice.Entities.Creancier;
+import ensa.ebanking.accountservice.Entities.ServiceProvider;
+import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Enums.ProductType;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Services.AdminService;
@@ -26,12 +31,15 @@ public class AccountServiceApplication {
 	@Autowired
 	BankAccountHelper bankAccountHelper;
 
+	@Autowired
+	CreancierDAO creancierDAO;
+
+	@Autowired
+	ServiceProviderDAO serviceProviderDAO;
+
 	public static void main(String[] args) {
 
-
-
-		SpringApplication.run(AccountServiceApplication.class, args
-		);
+		SpringApplication.run(AccountServiceApplication.class, args);
 
 	}
 
@@ -39,9 +47,6 @@ public class AccountServiceApplication {
 	CommandLineRunner run(ClientService clientService, AgentService agentService, AdminService adminService, EmailHelper emailHelper) {
 		return args -> {
 //			emailHelper.sendEmail("enter-your-test-mail-here@gmail.com","test subject", "test body");
-
-			bankAccountHelper.addClientAccountToXml("432", "nameefwdsdc", 342D);
-
 
 			//admin password : ensapay@@2022
 			// ajoute d'un administrateur statiquement :
@@ -79,6 +84,24 @@ public class AccountServiceApplication {
 							"01234567"
 					)
 			);
+
+			serviceProviderDAO.save(new ServiceProvider(1L, "Maroc Telecom"));
+			serviceProviderDAO.save(new ServiceProvider(2L, "INWI"));
+
+			creancierDAO.save(new Creancier(
+					1,
+					"Maroc Telecom - Recharge",
+					CreancierCategory.RECHARGE,
+					new ServiceProvider(1L, "Maroc Telecom")
+			));
+
+			creancierDAO.save(new Creancier(
+					2,
+					"INWI - Recharge",
+					CreancierCategory.RECHARGE,
+					new ServiceProvider(2L, "INWI")
+			));
+
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));
 
