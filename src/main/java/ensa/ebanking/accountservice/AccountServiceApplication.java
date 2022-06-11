@@ -90,8 +90,9 @@ public class AccountServiceApplication {
 					)
 			);
 
-			serviceProviderDAO.save(new ServiceProvider(1L, "Maroc Telecom", "06987123456"));
-			serviceProviderDAO.save(new ServiceProvider(2L, "INWI", "06234876345"));
+			serviceProviderDAO.save(new ServiceProvider(1L, "Maroc Telecom", "0698712345"));
+			serviceProviderDAO.save(new ServiceProvider(2L, "INWI", "0623487634"));
+			serviceProviderDAO.save(new ServiceProvider(3L, "ALCS", "0687678456"));
 
 			creancierDAO.save(new Creancier(
 					1,
@@ -105,6 +106,13 @@ public class AccountServiceApplication {
 					"INWI - Recharge",
 					CreancierCategory.RECHARGE,
 					new ServiceProvider(2L, "INWI", "06234876345")
+			));
+
+			creancierDAO.save(new Creancier(
+					3,
+					"ALCS - Donation",
+					CreancierCategory.DONATION,
+					new ServiceProvider(3L, "ALCS", "0687678456")
 			));
 
 			creanceDAO.save(new Creance(

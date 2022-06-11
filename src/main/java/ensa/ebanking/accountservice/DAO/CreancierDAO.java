@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CreancierDAO extends JpaRepository<Creancier, Long> {
-
+    Creancier findByCode(Long code);
 }

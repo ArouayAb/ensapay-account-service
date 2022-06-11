@@ -7,8 +7,10 @@ import ensa.ebanking.accountservice.Entities.Creance;
 import ensa.ebanking.accountservice.Entities.Creancier;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
+import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
 import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
+import ensa.ebanking.accountservice.Exceptions.WrongCreancierCategoryException;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.MappingHelper;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
@@ -23,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -61,6 +65,30 @@ public class CMIService {
             creance.setCreanceStatus(CreanceStatus.COMPLETED);
             creanceDAO.save(creance);
         }
+    }
+
+    public void payDonation(String phoneNumber, String creancierCode, String amount) throws IOException {
+        User user = userDAO.findByPhoneNumber(phoneNumber);
+        Creancier creancier = creancierDAO.findByCode(Long.parseLong(creancierCode));
+
+        if(creancier.getCreancierCategory() != CreancierCategory.DONATION) {
+            throw new WrongCreancierCategoryException("Category expected is different than the provided");
+        }
+
+        Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
+        if(balance < Double.parseDouble(amount)) {
+            throw new NotEnoughBalanceException("Client balance is: " + balance + " While required is: " + Double.parseDouble(amount));
+        }
+
+        Creance creance = new Creance();
+        creance.setAmount(Double.parseDouble(amount));
+        creance.setClientProfile(user.getClientProfile());
+        creance.setCreancier(creancier);
+        creance.setCreanceStatus(CreanceStatus.COMPLETED);
+        creance.setDueDate(Date.valueOf(LocalDate.now()));
+
+        bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
+        creanceDAO.save(creance);
     }
 
     public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) {
