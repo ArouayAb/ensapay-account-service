@@ -17,6 +17,7 @@ import ensa.ebanking.accountservice.Enums.ProductType;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Services.AdminService;
 import ensa.ebanking.accountservice.Services.AgentService;
+import ensa.ebanking.accountservice.Services.CMIService;
 import ensa.ebanking.accountservice.Services.ClientService;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class AccountServiceApplication {
 			ClientService clientService,
 			AgentService agentService,
 			AdminService adminService,
+			CMIService cmiService,
 			EmailHelper emailHelper) {
 		return args -> {
 //			emailHelper.sendEmail("enter-your-test-mail-here@gmail.com","test subject", "test body");
@@ -90,30 +92,7 @@ public class AccountServiceApplication {
 					)
 			);
 
-			serviceProviderDAO.save(new ServiceProvider(1L, "Maroc Telecom", "0698712345"));
-			serviceProviderDAO.save(new ServiceProvider(2L, "INWI", "0623487634"));
-			serviceProviderDAO.save(new ServiceProvider(3L, "ALCS", "0687678456"));
-
-			creancierDAO.save(new Creancier(
-					1,
-					"Maroc Telecom - Recharge",
-					CreancierCategory.RECHARGE,
-					new ServiceProvider(1L, "Maroc Telecom", "06987123456")
-			));
-
-			creancierDAO.save(new Creancier(
-					2,
-					"INWI - Recharge",
-					CreancierCategory.RECHARGE,
-					new ServiceProvider(2L, "INWI", "06234876345")
-			));
-
-			creancierDAO.save(new Creancier(
-					3,
-					"ALCS - Donation",
-					CreancierCategory.DONATION,
-					new ServiceProvider(3L, "ALCS", "0687678456")
-			));
+			cmiService.saveStaticDataToDB();
 
 			creanceDAO.save(new Creance(
 					1L,

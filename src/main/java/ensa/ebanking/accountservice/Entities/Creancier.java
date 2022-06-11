@@ -1,6 +1,8 @@
 package ensa.ebanking.accountservice.Entities;
 
 import ensa.ebanking.accountservice.Enums.CreancierCategory;
+import ensa.ebanking.accountservice.Enums.ValidRecharge;
+import org.yaml.snakeyaml.util.EnumUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -62,5 +64,18 @@ public class Creancier {
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public boolean isValidAmount(Double amount) {
+        boolean isValidAmount = false;
+        try{
+            if(ValidRecharge.isMember(String.valueOf(amount.intValue()))) {
+                isValidAmount = true;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            isValidAmount = false;
+        }
+        return isValidAmount;
     }
 }

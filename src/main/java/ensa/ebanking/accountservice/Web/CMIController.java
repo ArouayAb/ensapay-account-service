@@ -74,6 +74,24 @@ public class CMIController {
         return ResponseEntity.status(200).build();
     }
 
+    @PostMapping("/pay-recharge")
+    ResponseEntity<String> payRecharge(@RequestBody String jsonBody) {
+        try {
+            cmiService.payRecharge(
+                    (String) new JSONObject(jsonBody).get("phoneNumber"),
+                    (String) new JSONObject(jsonBody).get("creancierCode"),
+                    (String) new JSONObject(jsonBody).get("amount"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e instanceof PaymentException)
+                return ResponseEntity.status(((PaymentException) e).errorCode()).build();
+            else {
+                return ResponseEntity.status(500).build();
+            }
+        }
+        return ResponseEntity.status(200).build();
+    }
+
     @PayloadRoot(namespace = NAMESPACE_CREATION, localPart = "AccountCreationRequest")
     @ResponsePayload
     public AccountCreationResponse createBankAccount(@RequestPayload AccountCreationRequest bankAccountReq) {
