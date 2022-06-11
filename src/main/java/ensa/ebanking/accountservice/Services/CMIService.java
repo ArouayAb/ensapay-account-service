@@ -45,12 +45,12 @@ public class CMIService {
 
     public void payFacture(String phoneNumber, String creanceCode) throws IOException {
         User user = userDAO.findByPhoneNumber(phoneNumber);
-        Creance creance = creanceDAO.findByClientProfile_IdAndCreancier_Code(user.getClientProfile().getId(), Long.parseLong(creanceCode)).get(0);
+        Creance creance = creanceDAO.findByClientProfile_IdAndCode(user.getClientProfile().getId(), Long.parseLong(creanceCode)).get(0);
         Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
         if(balance < creance.getAmount()){
             throw new RuntimeException();
         } else {
-            bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(),balance - creance.getAmount());
+            bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
             creance.setCreanceStatus(CreanceStatus.COMPLETED);
             creanceDAO.save(creance);
         }

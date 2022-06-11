@@ -4,9 +4,9 @@
         <name>name</name>
         <balance>12.5324</balance>
     </bankAccount>
-    <bankAccount phoneNumber="0612345465">
+    <bankAccount phoneNumber="0111222333">
         <accountNumber>123123</accountNumber>
         <name>firstuser</name>
-        <balance>340.0</balance>
+        <balance>114.94000000000005</balance>
     </bankAccount>
 </BankAccounts>

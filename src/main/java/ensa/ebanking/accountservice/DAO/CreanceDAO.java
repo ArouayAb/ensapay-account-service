@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface CreanceDAO extends JpaRepository<Creance, Long> {
     List<Creance> findAllByClientProfile_Id(Long profileId);
-    List<Creance> findByClientProfile_IdAndCreancier_Code(Long profileId, Long creancierCode);
+    List<Creance> findByClientProfile_IdAndCode(Long profileId, Long creancierCode);
 
 }

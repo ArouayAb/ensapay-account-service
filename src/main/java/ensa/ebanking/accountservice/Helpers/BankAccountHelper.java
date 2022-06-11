@@ -170,13 +170,66 @@ public class BankAccountHelper {
         return null;
     }
 
+    public BankAccount findServiceAccount(String phoneNumber) throws IOException {
+        BankAccounts bankAccounts = loadBankAccountsFromXml(serviceAccountsFile);
+        List<BankAccount> bankAccountList = bankAccounts.getBankAccount();
+        for (BankAccount bankAccount: bankAccountList) {
+            if(bankAccount.getPhoneNumber().equals(phoneNumber)) {
+                return bankAccount;
+            }
+        }
+        return null;
+    }
+
     public Double findClientAccountBalance(String phoneNumber) throws IOException {
         BankAccount bankAccount = findClientAccount(phoneNumber);
         if(bankAccount == null) return null;
         return bankAccount.getBalance();
     }
 
-    public void updateBankAccountBalance(String phoneNumber, String targetPhoneNumber, Double newBalance) {
+    public void updateBankAccountBalance(String phoneNumber, String targetPhoneNumber, Double amount) throws IOException {
+        BankAccount clientBankAccount = findClientAccount(phoneNumber);
+        BankAccount serviceBankAccount = findServiceAccount(targetPhoneNumber);
 
+        if(serviceBankAccount == null || clientBankAccount == null) {
+            throw new RuntimeException();
+        }
+
+        clientBankAccount.setBalance(clientBankAccount.getBalance() - amount);
+        serviceBankAccount.setBalance(serviceBankAccount.getBalance() + amount);
+
+        saveClientBankAccount(clientBankAccount);
+        saveServiceBankAccount(serviceBankAccount);
+    }
+
+    public void saveClientBankAccount(BankAccount bankAccountToSave) throws IOException {
+        saveBankAccount(bankAccountToSave, clientAccountsFile);
+    }
+
+    public void saveServiceBankAccount(BankAccount bankAccountToSave) throws IOException {
+        saveBankAccount(bankAccountToSave, serviceAccountsFile);
+        return;
+    }
+
+    private void saveBankAccount(BankAccount bankAccountToSave, String serviceAccountsFile) throws IOException {
+        String serviceAccountPath = String.valueOf(Paths.get(accountsDirectory, serviceAccountsFile));
+        String absoluteServiceAccountPath = String.valueOf(Paths.get(System.getProperty("user.dir"), "src", "main", "external", serviceAccountPath));
+
+        BankAccounts bankAccounts = loadBankAccountsFromXml(serviceAccountsFile);
+        List<BankAccount> bankAccountList = bankAccounts.getBankAccount();
+        for (BankAccount bankAccount: bankAccountList) {
+            if(bankAccount.getPhoneNumber().equals(bankAccountToSave.getPhoneNumber())) {
+                bankAccount.setBalance(bankAccountToSave.getBalance());
+                bankAccount.setName(bankAccountToSave.getName());
+            }
+        }
+
+        BufferedWriter bufferedWriter = new BufferedWriter(
+                new FileWriter(String.valueOf(absoluteServiceAccountPath))
+        );
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = xmlMapper.writeValueAsString(bankAccounts);
+        bufferedWriter.write(xml);
+        bufferedWriter.close();
     }
 }
