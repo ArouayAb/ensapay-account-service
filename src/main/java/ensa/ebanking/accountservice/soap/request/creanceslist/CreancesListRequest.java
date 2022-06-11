@@ -6,11 +6,10 @@
 //
 
 
-package ensa.ebanking.accountservice.soap.request.accountbalance;
+package ensa.ebanking.accountservice.soap.request.creanceslist;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="phoneNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="profileId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,36 +35,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "phoneNumber"
+    "profileId"
 })
-@XmlRootElement(name = "AccountBalanceRequest")
-public class AccountBalanceRequest {
+@XmlRootElement(name = "CreancesListRequest")
+public class CreancesListRequest {
 
-    @XmlElement(required = true)
-    protected String phoneNumber;
+    protected long profileId;
 
     /**
-     * Gets the value of the phoneNumber property.
+     * Gets the value of the profileId property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public long getProfileId() {
+        return profileId;
     }
 
     /**
-     * Sets the value of the phoneNumber property.
+     * Sets the value of the profileId property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setPhoneNumber(String value) {
-        this.phoneNumber = value;
+    public void setProfileId(long value) {
+        this.profileId = value;
     }
 
 }

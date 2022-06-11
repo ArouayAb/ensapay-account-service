@@ -22,7 +22,7 @@ public class SoapWSConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<MessageDispatcherServlet>(servlet, "/cmi/*");
+        return new ServletRegistrationBean<>(servlet, "/cmi-soap/*");
     }
 
 
@@ -30,7 +30,7 @@ public class SoapWSConfig extends WsConfigurerAdapter {
     public DefaultWsdl11Definition defaultWsdl11Definition(@Qualifier("creationSchema") XsdSchema schema) {
         DefaultWsdl11Definition defaultWsdl11Definition = new DefaultWsdl11Definition();
         defaultWsdl11Definition.setPortTypeName("CMI");
-        defaultWsdl11Definition.setLocationUri("/cmi/createAccount");
+        defaultWsdl11Definition.setLocationUri("/cmi-soap/createAccount");
         defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/AccountCreation");
         defaultWsdl11Definition.setSchema(schema);
         return defaultWsdl11Definition;
@@ -40,7 +40,7 @@ public class SoapWSConfig extends WsConfigurerAdapter {
     public DefaultWsdl11Definition defaultWsdl11Definition2(@Qualifier("consultSchema")XsdSchema schema) {
         DefaultWsdl11Definition defaultWsdl11Definition = new DefaultWsdl11Definition();
         defaultWsdl11Definition.setPortTypeName("CMI");
-        defaultWsdl11Definition.setLocationUri("/cmi/consultAccount");
+        defaultWsdl11Definition.setLocationUri("/cmi-soap/consultAccount");
         defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/AccountBalance");
         defaultWsdl11Definition.setSchema(schema);
         return defaultWsdl11Definition;
@@ -50,8 +50,18 @@ public class SoapWSConfig extends WsConfigurerAdapter {
     public DefaultWsdl11Definition defaultWsdl11Definition3(@Qualifier("creanciersListSchema")XsdSchema schema) {
         DefaultWsdl11Definition defaultWsdl11Definition = new DefaultWsdl11Definition();
         defaultWsdl11Definition.setPortTypeName("CMI");
-        defaultWsdl11Definition.setLocationUri("/cmi/creanciersList");
+        defaultWsdl11Definition.setLocationUri("/cmi-soap/creanciersList");
         defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/CreanciersList");
+        defaultWsdl11Definition.setSchema(schema);
+        return defaultWsdl11Definition;
+    }
+
+    @Bean(name = "creancesList")
+    public DefaultWsdl11Definition defaultWsdl11Definition4(@Qualifier("creancesListSchema")XsdSchema schema) {
+        DefaultWsdl11Definition defaultWsdl11Definition = new DefaultWsdl11Definition();
+        defaultWsdl11Definition.setPortTypeName("CMI");
+        defaultWsdl11Definition.setLocationUri("/cmi-soap/creancesList");
+        defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/CreancesList");
         defaultWsdl11Definition.setSchema(schema);
         return defaultWsdl11Definition;
     }
@@ -69,6 +79,11 @@ public class SoapWSConfig extends WsConfigurerAdapter {
     @Bean(name = "creanciersListSchema")
     public XsdSchema schema3() {
         return new SimpleXsdSchema(new ClassPathResource("xmlCreanciersListSchemas.xsd"));
+    }
+
+    @Bean(name = "creancesListSchema")
+    public XsdSchema schema4() {
+        return new SimpleXsdSchema(new ClassPathResource("xmlCreancesListSchemas.xsd"));
     }
 
 }

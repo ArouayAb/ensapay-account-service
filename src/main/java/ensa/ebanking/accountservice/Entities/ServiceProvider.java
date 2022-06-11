@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class ServiceProvider {
@@ -15,9 +16,21 @@ public class ServiceProvider {
     @NotEmpty
     private String name;
 
-    public ServiceProvider(Long code, String name) {
+    @NotNull
+    private String phoneNumber;
+
+    public ServiceProvider(Long code, String name, String phoneNumber) {
         this.code = code;
         this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getCode() {

@@ -15,6 +15,9 @@ public class Creance {
     @NotNull
     private Date dueDate;
 
+    @NotNull
+    private Double amount;
+
     @Enumerated(EnumType.STRING)
     private CreanceStatus creanceStatus;
 
@@ -24,12 +27,21 @@ public class Creance {
     @ManyToOne
     private Creancier creancier;
 
-    public Creance(Long code, Date dueDate, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier) {
+    public Creance(Long code, Date dueDate, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier, Double amount) {
         this.code = code;
         this.dueDate = dueDate;
         this.creanceStatus = creanceStatus;
         this.clientProfile = clientProfile;
         this.creancier = creancier;
+        this.amount = amount;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public Creance() {

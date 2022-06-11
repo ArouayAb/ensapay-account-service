@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.ebanking.ensa/accountservice/Soap/Request/CreancesList/"
+           xmlns:tns="http://www.ebanking.ensa/accountservice/Soap/Request/CreancesList/"
+           elementFormDefault="qualified">
+
+    <xsd:element name="CreancesListRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="profileId" type="xs:long" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="CreancesListResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="creance" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xsd:element name="code" type="xs:long" />
+                            <xsd:element name="dueDate" type="xs:dateTime" />
+                            <xsd:element name="creanceStatus" type="xs:string" />
+                            <xsd:element name="creancier">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xsd:element name="code" type="xs:long" />
+                                        <xsd:element name="name" type="xs:string" />
+                                        <xsd:element name="creancierCategory" type="xs:string" />
+                                        <xsd:element name="serviceProvider" >
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xsd:element name="code" type="xs:long" />
+                                                    <xsd:element name="name" type="xs:string" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xsd:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xsd:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xs:schema>

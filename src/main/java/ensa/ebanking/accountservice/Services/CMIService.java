@@ -1,14 +1,22 @@
 package ensa.ebanking.accountservice.Services;
 
+import ensa.ebanking.accountservice.DAO.CreanceDAO;
 import ensa.ebanking.accountservice.DAO.CreancierDAO;
+import ensa.ebanking.accountservice.DAO.UserDAO;
+import ensa.ebanking.accountservice.Entities.Creance;
 import ensa.ebanking.accountservice.Entities.Creancier;
+import ensa.ebanking.accountservice.Entities.User;
+import ensa.ebanking.accountservice.Enums.CreanceStatus;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.MappingHelper;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceResponse;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationRequest;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationResponse;
+import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
+import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListResponse;
 import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListResponse;
+import org.hibernate.engine.spi.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +35,26 @@ public class CMIService {
     CreancierDAO creancierDAO;
 
     @Autowired
+    CreanceDAO creanceDAO;
+
+    @Autowired
     MappingHelper mappingHelper;
+
+    @Autowired
+    UserDAO userDAO;
+
+    public void payFacture(String phoneNumber, String creanceCode) throws IOException {
+        User user = userDAO.findByPhoneNumber(phoneNumber);
+        Creance creance = creanceDAO.findByClientProfile_IdAndCreancier_Code(user.getClientProfile().getId(), Long.parseLong(creanceCode)).get(0);
+        Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
+        if(balance < creance.getAmount()){
+            throw new RuntimeException();
+        } else {
+            bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(),balance - creance.getAmount());
+            creance.setCreanceStatus(CreanceStatus.COMPLETED);
+            creanceDAO.save(creance);
+        }
+    }
 
     public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) {
 
@@ -77,5 +104,19 @@ public class CMIService {
         }
 
         return creanciersListResponse;
+    }
+
+    public CreancesListResponse getCreancesList(CreancesListRequest creancesListReq) {
+        CreancesListResponse creancesListRes = new CreancesListResponse();
+        List<CreancesListResponse.Creance> creancesRes = creancesListRes.getCreance();
+        List<Creance> creances = creanceDAO.findAllByClientProfile_Id(creancesListReq.getProfileId());
+
+        for (Creance creance: creances) {
+            CreancesListResponse.Creance creanceRes = new CreancesListResponse.Creance();
+            MappingHelper.mapCreance(creance, creanceRes);
+            creancesRes.add(creanceRes);
+        }
+
+        return creancesListRes;
     }
 }

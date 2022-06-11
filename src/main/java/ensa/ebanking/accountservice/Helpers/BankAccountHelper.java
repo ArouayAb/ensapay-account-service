@@ -175,4 +175,8 @@ public class BankAccountHelper {
         if(bankAccount == null) return null;
         return bankAccount.getBalance();
     }
+
+    public void updateBankAccountBalance(String phoneNumber, String targetPhoneNumber, Double newBalance) {
+
+    }
 }

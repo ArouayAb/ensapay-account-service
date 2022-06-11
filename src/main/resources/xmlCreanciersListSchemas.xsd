@@ -17,6 +17,14 @@
                             <xsd:element name="code" type="xs:long" />
                             <xsd:element name="name" type="xs:string" />
                             <xsd:element name="creancierCategory" type="xs:string" />
+                            <xsd:element name="serviceProvider">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xsd:element name="code" type="xs:long" />
+                                        <xsd:element name="name" type="xs:string" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xsd:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xsd:element>
