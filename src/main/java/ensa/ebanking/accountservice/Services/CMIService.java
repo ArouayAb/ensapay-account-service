@@ -192,19 +192,19 @@ public class CMIService {
         // ServiceProviders
         serviceProviderDAO.save(new ServiceProvider(
                 1L,
-                "url",
+                "/resources/static/images/IAM.jpeg",
                 "Maroc Telecom",
                 "IAM",
                 "0698712345"));
         serviceProviderDAO.save(new ServiceProvider(
                 2L,
-                "url",
+                "/resources/static/images/inwi.jpeg",
                 "INWI",
                 "INWI",
                 "0623487634"));
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
-                "url",
+                "/resources/static/images/alcs.jpeg",
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
                 "0687678456"));
@@ -212,7 +212,28 @@ public class CMIService {
         //Creanciers
         creancierDAO.save(new Creancier(
                 1,
-                "Facture",
+                "Facture - Mobile",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Fixe",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Internet ADSL",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
@@ -247,7 +268,7 @@ public class CMIService {
 
         creancierDAO.save(new Creancier(
                 6,
-                "Facture",
+                "Facture - ",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));

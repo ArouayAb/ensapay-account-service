@@ -2,7 +2,6 @@ package ensa.ebanking.accountservice.Entities;
 
 import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Enums.ValidRecharge;
-import org.yaml.snakeyaml.util.EnumUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

@@ -1,9 +1,5 @@
 package ensa.ebanking.accountservice.Web;
 
-import ensa.ebanking.accountservice.Entities.User;
-import ensa.ebanking.accountservice.Exceptions.BankAccountNotFoundException;
-import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
-import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
 import ensa.ebanking.accountservice.Exceptions.PaymentException;
 import ensa.ebanking.accountservice.Services.CMIService;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
@@ -22,10 +18,6 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
-import java.io.IOException;
-import java.security.Principal;
-import java.util.List;
 
 // This controller can produce both a rest and soap api
 @Endpoint

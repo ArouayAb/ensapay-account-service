@@ -1,16 +1,10 @@
 package ensa.ebanking.accountservice.Web;
 
-
-
 import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
-import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 
 import ensa.ebanking.accountservice.Entities.ClientProfile;
-import ensa.ebanking.accountservice.Entities.Profile;
 
-import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Services.AgentService;
-import ensa.ebanking.accountservice.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping("api/account/agent")
