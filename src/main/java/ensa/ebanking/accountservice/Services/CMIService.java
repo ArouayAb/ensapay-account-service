@@ -43,16 +43,18 @@ public class CMIService {
     @Autowired
     UserDAO userDAO;
 
-    public void payFacture(String phoneNumber, String creanceCode) throws IOException {
-        User user = userDAO.findByPhoneNumber(phoneNumber);
-        Creance creance = creanceDAO.findByClientProfile_IdAndCode(user.getClientProfile().getId(), Long.parseLong(creanceCode)).get(0);
-        Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
-        if(balance < creance.getAmount()){
-            throw new RuntimeException();
-        } else {
-            bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
-            creance.setCreanceStatus(CreanceStatus.COMPLETED);
-            creanceDAO.save(creance);
+    public void payFacture(String phoneNumber, List<Object> creanceCodes) throws IOException {
+        for (Object creanceCode: creanceCodes) {
+            User user = userDAO.findByPhoneNumber(phoneNumber);
+            Creance creance = creanceDAO.findByClientProfile_IdAndCode(user.getClientProfile().getId(), Long.parseLong((String) creanceCode)).get(0);
+            Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
+            if(balance < creance.getAmount() || creance.getCreanceStatus() == CreanceStatus.COMPLETED){
+                throw new RuntimeException();
+            } else {
+                bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
+                creance.setCreanceStatus(CreanceStatus.COMPLETED);
+                creanceDAO.save(creance);
+            }
         }
     }
 

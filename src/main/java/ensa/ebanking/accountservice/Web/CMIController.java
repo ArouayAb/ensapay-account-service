@@ -9,6 +9,7 @@ import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreation
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListResponse;
 import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListResponse;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @Endpoint
 @RestController
@@ -41,7 +43,8 @@ public class CMIController {
     @PostMapping("/pay-facture")
     ResponseEntity<String> payFacture(@RequestBody String jsonBody) {
         try {
-            cmiService.payFacture((String) new JSONObject(jsonBody).get("phoneNumber"), (String) new JSONObject(jsonBody).get("creanceCode"));
+            JSONArray jsonArray = (JSONArray) new JSONObject(jsonBody).get("creanceCodes");
+            cmiService.payFacture((String) new JSONObject(jsonBody).get("phoneNumber"), jsonArray.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();

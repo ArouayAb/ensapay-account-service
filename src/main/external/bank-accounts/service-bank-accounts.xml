@@ -2,6 +2,6 @@
     <bankAccount phoneNumber="06987123456">
         <accountNumber>123123</accountNumber>
         <name>maroc telecom</name>
-        <balance>237.5924</balance>
+        <balance>500.2423999999999</balance>
     </bankAccount>
 </BankAccounts>
