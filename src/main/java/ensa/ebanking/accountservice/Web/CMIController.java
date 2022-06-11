@@ -1,6 +1,10 @@
 package ensa.ebanking.accountservice.Web;
 
 import ensa.ebanking.accountservice.Entities.User;
+import ensa.ebanking.accountservice.Exceptions.BankAccountNotFoundException;
+import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
+import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
+import ensa.ebanking.accountservice.Exceptions.PaymentException;
 import ensa.ebanking.accountservice.Services.CMIService;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceResponse;
@@ -23,6 +27,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
+// This controller can produce both a rest and soap api
 @Endpoint
 @RestController
 @RequestMapping("cmi-rest")
@@ -35,11 +40,6 @@ public class CMIController {
     @Autowired
     private CMIService cmiService;
 
-    @GetMapping("/hello-world")
-    String test() {
-        return "Hello World!";
-    }
-
     @PostMapping("/pay-facture")
     ResponseEntity<String> payFacture(@RequestBody String jsonBody) {
         try {
@@ -47,7 +47,11 @@ public class CMIController {
             cmiService.payFacture((String) new JSONObject(jsonBody).get("phoneNumber"), jsonArray.toList());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            if(e instanceof PaymentException)
+                return ResponseEntity.status(((PaymentException) e).errorCode()).build();
+            else {
+                return ResponseEntity.status(500).build();
+            }
         }
         return ResponseEntity.status(200).build();
     }

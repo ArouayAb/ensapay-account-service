@@ -7,6 +7,6 @@
     <bankAccount phoneNumber="0111222333">
         <accountNumber>123123</accountNumber>
         <name>firstuser</name>
-        <balance>1010.29</balance>
+        <balance>1000.23</balance>
     </bankAccount>
 </BankAccounts>

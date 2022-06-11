@@ -7,6 +7,8 @@ import ensa.ebanking.accountservice.Entities.Creance;
 import ensa.ebanking.accountservice.Entities.Creancier;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
+import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
+import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.MappingHelper;
 import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
@@ -48,13 +50,16 @@ public class CMIService {
             User user = userDAO.findByPhoneNumber(phoneNumber);
             Creance creance = creanceDAO.findByClientProfile_IdAndCode(user.getClientProfile().getId(), Long.parseLong((String) creanceCode)).get(0);
             Double balance = bankAccountHelper.findClientAccountBalance(phoneNumber);
-            if(balance < creance.getAmount() || creance.getCreanceStatus() == CreanceStatus.COMPLETED){
-                throw new RuntimeException();
-            } else {
-                bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
-                creance.setCreanceStatus(CreanceStatus.COMPLETED);
-                creanceDAO.save(creance);
+
+            if(balance < creance.getAmount()) {
+                throw new NotEnoughBalanceException("Client balance is: " + balance + " While required is: " + creance.getAmount());
+            }else if(creance.getCreanceStatus() == CreanceStatus.COMPLETED) {
+                throw new CreanceAlreadyPaidException("Creance: " + creance.getCode() + " has status COMPLETED");
             }
+
+            bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
+            creance.setCreanceStatus(CreanceStatus.COMPLETED);
+            creanceDAO.save(creance);
         }
     }
 

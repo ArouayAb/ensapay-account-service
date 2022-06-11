@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
+import ensa.ebanking.accountservice.Exceptions.BankAccountNotFoundException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -183,7 +184,7 @@ public class BankAccountHelper {
 
     public Double findClientAccountBalance(String phoneNumber) throws IOException {
         BankAccount bankAccount = findClientAccount(phoneNumber);
-        if(bankAccount == null) return null;
+        if(bankAccount == null) throw new BankAccountNotFoundException("Client bank account not found");
         return bankAccount.getBalance();
     }
 
@@ -191,8 +192,10 @@ public class BankAccountHelper {
         BankAccount clientBankAccount = findClientAccount(phoneNumber);
         BankAccount serviceBankAccount = findServiceAccount(targetPhoneNumber);
 
-        if(serviceBankAccount == null || clientBankAccount == null) {
-            throw new RuntimeException();
+        if(serviceBankAccount == null){
+            throw new BankAccountNotFoundException("Service bank account not found");
+        }else if(clientBankAccount == null) {
+            throw new BankAccountNotFoundException("Client bank account not found");
         }
 
         clientBankAccount.setBalance(clientBankAccount.getBalance() - amount);
@@ -208,7 +211,6 @@ public class BankAccountHelper {
 
     public void saveServiceBankAccount(BankAccount bankAccountToSave) throws IOException {
         saveBankAccount(bankAccountToSave, serviceAccountsFile);
-        return;
     }
 
     private void saveBankAccount(BankAccount bankAccountToSave, String serviceAccountsFile) throws IOException {
