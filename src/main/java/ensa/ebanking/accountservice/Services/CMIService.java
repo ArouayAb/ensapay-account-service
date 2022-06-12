@@ -434,5 +434,26 @@ public class CMIService {
                 CreancierCategory.DONATION,
                 serviceProviderDAO.findById(6L).get()
         ));
+
+        creancierDAO.save(new Creancier(
+                29,
+                "NORMAL",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                30,
+                "NORMAL",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(2L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                31,
+                "NORMAL",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(3L).get()
+        ));
     }
 }
