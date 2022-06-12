@@ -2,14 +2,10 @@ package ensa.ebanking.accountservice.Services;
 
 
 import ensa.ebanking.accountservice.DAO.AdminDAO;
-import ensa.ebanking.accountservice.DAO.ClientProfileDAO;
 import ensa.ebanking.accountservice.DAO.UserDAO;
 import ensa.ebanking.accountservice.DTO.AdminProfileDTO;
-import ensa.ebanking.accountservice.DTO.ClientProfileDTO;
 import ensa.ebanking.accountservice.Entities.AdminProfile;
-import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

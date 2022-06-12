@@ -3,7 +3,6 @@ package ensa.ebanking.accountservice.Filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import ensa.ebanking.accountservice.Entities.CustomUserDetails;
-import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Utilities.JWTUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
