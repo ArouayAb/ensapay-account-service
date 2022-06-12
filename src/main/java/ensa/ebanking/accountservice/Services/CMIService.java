@@ -202,8 +202,30 @@ public class CMIService {
                 "INWI",
                 "INWI",
                 "0623487634"));
+
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
+                "/resources/static/images/.jpeg",
+                "Orange",
+                "Orange",
+                "0623487634"));
+
+        serviceProviderDAO.save(new ServiceProvider(
+                4L,
+                "/resources/static/images/.jpeg",
+                "Radeema",
+                "Radeema",
+                "0623487634"));
+
+        serviceProviderDAO.save(new ServiceProvider(
+                5L,
+                "/resources/static/images/alcs.jpeg",
+                "Association de Lutte Contre le SIDA",
+                "ALCS",
+                "0687678456"));
+
+        serviceProviderDAO.save(new ServiceProvider(
+                6L,
                 "/resources/static/images/alcs.jpeg",
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
@@ -267,8 +289,29 @@ public class CMIService {
         ));
 
         creancierDAO.save(new Creancier(
-                6,
-                "Facture - ",
+                1,
+                "Facture - Mobile",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Fixe",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Internet ADSL",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                1,
+                "Facture - Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));

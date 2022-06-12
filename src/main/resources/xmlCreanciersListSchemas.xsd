@@ -21,7 +21,10 @@
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xsd:element name="code" type="xs:long" />
+                                        <xsd:element name="image" type="xs:string" />
                                         <xsd:element name="name" type="xs:string" />
+                                        <xsd:element name="surname" type="xs:string" />
+                                        <xsd:element name="phoneNumber" type="xs:string" />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xsd:element>
