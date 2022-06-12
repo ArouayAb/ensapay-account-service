@@ -9,4 +9,9 @@
         <name>firstuser</name>
         <balance>0.23</balance>
     </bankAccount>
+    <bankAccount phoneNumber="0111232333">
+        <accountNumber>8498834395</accountNumber>
+        <name>hehehehe</name>
+        <balance>666.0</balance>
+    </bankAccount>
 </BankAccounts>

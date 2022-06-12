@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 class BankAccounts {
     @JacksonXmlElementWrapper(useWrapping = false)
@@ -134,7 +135,7 @@ public class BankAccountHelper {
         return bankAccounts;
     }
 
-    public void addClientAccountToXml(String phoneNumber, String name, Double balance) throws IOException {
+    public String addClientAccountToXml(String phoneNumber, String name, Double balance) throws IOException {
         String clientAccountPath = String.valueOf(Paths.get(accountsDirectory, clientAccountsFile));
         String absoluteClientAccountPath = String.valueOf(Paths.get(System.getProperty("user.dir"), "src", "main", "external", clientAccountPath));
 
@@ -144,7 +145,13 @@ public class BankAccountHelper {
                 new FileWriter(String.valueOf(absoluteClientAccountPath))
         );
 
-        BankAccount bankAccount = new BankAccount(phoneNumber, "123123", name, balance);
+        String accountNumber = String.valueOf(ThreadLocalRandom.current().nextLong(0L, 9999999999L));
+        BankAccount bankAccount = new BankAccount(
+                phoneNumber,
+                accountNumber,
+                name,
+                balance
+        );
         List<BankAccount> bankAccountList = bankAccounts.getBankAccount();
         bankAccountList.add(bankAccount);
 
@@ -154,6 +161,8 @@ public class BankAccountHelper {
         String xml = xmlMapper.writeValueAsString(bankAccounts);
         bufferedWriter.write(xml);
         bufferedWriter.close();
+
+        return accountNumber;
     }
 
     public BankAccount findClientAccount(String phoneNumber) throws IOException {
@@ -164,7 +173,7 @@ public class BankAccountHelper {
                 return bankAccount;
             }
         }
-        return null;
+        throw new BankAccountNotFoundException("Client bank account not found");
     }
 
     public BankAccount findServiceAccount(String phoneNumber) throws IOException {
@@ -175,13 +184,17 @@ public class BankAccountHelper {
                 return bankAccount;
             }
         }
-        return null;
+        throw new BankAccountNotFoundException("Service bank account not found");
     }
 
     public Double findClientAccountBalance(String phoneNumber) throws IOException {
         BankAccount bankAccount = findClientAccount(phoneNumber);
-        if(bankAccount == null) throw new BankAccountNotFoundException("Client bank account not found");
         return bankAccount.getBalance();
+    }
+
+    public String findClientAccountAccountNumber(String phoneNumber) throws IOException {
+        BankAccount bankAccount = findClientAccount(phoneNumber);
+        return bankAccount.getAccountNumber();
     }
 
     public void updateBankAccountBalance(String phoneNumber, String targetPhoneNumber, Double amount) throws IOException {

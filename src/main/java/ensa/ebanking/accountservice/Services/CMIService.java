@@ -11,14 +11,11 @@ import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
 import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Enums.ValidRecharge;
-import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
-import ensa.ebanking.accountservice.Exceptions.InvalidRechargeAmountException;
-import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
-import ensa.ebanking.accountservice.Exceptions.WrongCreancierCategoryException;
+import ensa.ebanking.accountservice.Exceptions.*;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.MappingHelper;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceResponse;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoRequest;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoResponse;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationRequest;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationResponse;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
@@ -123,37 +120,47 @@ public class CMIService {
         addCreance(phoneNumber, amount, user, creancier);
     }
 
-    public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) {
+    public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) throws IOException {
 
+        String accountNumber;
         try {
-            if(bankAccountHelper.findClientAccount(bankAccountReq.getPhoneNumber()) == null) {
-                bankAccountHelper.addClientAccountToXml(bankAccountReq.getPhoneNumber(), bankAccountReq.getName(), bankAccountReq.getBalance());
+            bankAccountHelper.findClientAccount(bankAccountReq.getPhoneNumber());
+        } catch (BankAccountNotFoundException be) {
+            accountNumber = bankAccountHelper.addClientAccountToXml(bankAccountReq.getPhoneNumber(), bankAccountReq.getName(), bankAccountReq.getBalance());
+            if(accountNumber == null) {
+                throw new BankAccountNotFoundException("Account number not found when creating");
             }
+            AccountCreationResponse bankAccountRes = new AccountCreationResponse();
+            bankAccountRes.setPhoneNumber(bankAccountReq.getPhoneNumber());
+            bankAccountRes.setName(bankAccountReq.getName());
+            bankAccountRes.setBalance(bankAccountReq.getBalance());
+            bankAccountRes.setAccountNumber(accountNumber);
+            return bankAccountRes;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        AccountCreationResponse bankAccountRes = new AccountCreationResponse();
-        bankAccountRes.setPhoneNumber(bankAccountReq.getPhoneNumber());
-        bankAccountRes.setName(bankAccountReq.getName());
-        bankAccountRes.setBalance(bankAccountReq.getBalance());
-        bankAccountRes.setAccountNumber(String.valueOf(ThreadLocalRandom.current().nextLong(0L, 9999999999L)));
-        return bankAccountRes;
+        throw new BankAccountAlreadyExistException("Bank account with this phone number already exist");
     }
 
-    public AccountBalanceResponse consultBankAccount(AccountBalanceRequest consultAccountReq) {
+    public AccountInfoResponse consultBankAccount(AccountInfoRequest consultAccountReq) {
 
-        double balance = 0;
+        Double balance;
+        String accountNumber;
         try {
-            if(bankAccountHelper.findClientAccount(consultAccountReq.getPhoneNumber()) != null) {
-                balance = bankAccountHelper.findClientAccountBalance(consultAccountReq.getPhoneNumber());
+            balance = bankAccountHelper.findClientAccountBalance(consultAccountReq.getPhoneNumber());
+            accountNumber = bankAccountHelper.findClientAccountAccountNumber(consultAccountReq.getPhoneNumber());
+            if(accountNumber == null || balance == null) {
+                throw new BankAccountNotFoundException("Account info not found when consulting");
             }
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
-        AccountBalanceResponse consultAccountRes = new AccountBalanceResponse();
+        AccountInfoResponse consultAccountRes = new AccountInfoResponse();
         consultAccountRes.setBalance(balance);
+        consultAccountRes.setAccountNumber(accountNumber);
         return consultAccountRes;
     }
 

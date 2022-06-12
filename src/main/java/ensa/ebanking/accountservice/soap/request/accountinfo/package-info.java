@@ -5,5 +5,5 @@
 // Generated on: 2022.06.12 at 03:21:52 PM WEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ebanking.ensa/accountservice/Soap/Request/CreancesList/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package ensa.ebanking.accountservice.soap.request.creanceslist;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ebanking.ensa/accountservice/Soap/Request/AccountInfo/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package ensa.ebanking.accountservice.soap.request.accountinfo;
