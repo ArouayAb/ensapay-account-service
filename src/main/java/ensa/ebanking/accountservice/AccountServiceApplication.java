@@ -91,7 +91,7 @@ public class AccountServiceApplication {
 			creanceDAO.save(new Creance(
 					1L,
 					Date.valueOf(LocalDate.of(2022, 10, 1)),
-					CreanceStatus.PENDING,
+					CreanceStatus.UNPAID,
 					clientProfileDAO.findById(1L).get(),
 					creancierDAO.findById(1L).get(),
 					12.53D
@@ -99,7 +99,7 @@ public class AccountServiceApplication {
 			creanceDAO.save(new Creance(
 					2L,
 					Date.valueOf(LocalDate.of(2022, 9, 1)),
-					CreanceStatus.PENDING,
+					CreanceStatus.UNPAID,
 					clientProfileDAO.findById(1L).get(),
 					creancierDAO.findById(1L).get(),
 					200D
