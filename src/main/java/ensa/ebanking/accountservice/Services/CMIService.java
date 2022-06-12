@@ -241,196 +241,196 @@ public class CMIService {
         //Creanciers
         creancierDAO.save(new Creancier(
                 1,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 2,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 3,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 4,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 5,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 6,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 7,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 8,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 9,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 10,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 11,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 12,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 13,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 14,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 15,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 16,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 17,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 18,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 19,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 20,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 21,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 22,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 23,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 24,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 25,
-                "Facture - Eau",
+                "Eau",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(4L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 26,
-                "Facture - Electricité",
+                "Electricité",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(4L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 27,
-                "ALCS - Donation",
+                "Donation",
                 CreancierCategory.DONATION,
                 serviceProviderDAO.findById(5L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 28,
-                "AAMH - Donation",
+                "Donation",
                 CreancierCategory.DONATION,
                 serviceProviderDAO.findById(6L).get()
         ));
