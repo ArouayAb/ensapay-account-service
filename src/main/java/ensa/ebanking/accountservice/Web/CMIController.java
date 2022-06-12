@@ -2,10 +2,10 @@ package ensa.ebanking.accountservice.Web;
 
 import ensa.ebanking.accountservice.Exceptions.PaymentException;
 import ensa.ebanking.accountservice.Services.CMIService;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceResponse;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationRequest;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationResponse;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoRequest;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoResponse;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListResponse;
 import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListResponse;
@@ -19,13 +19,15 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import java.io.IOException;
+
 // This controller can produce both a rest and soap api
 @Endpoint
 @RestController
 @RequestMapping("cmi-rest")
 public class CMIController {
     private static final String NAMESPACE_CREATION="http://www.ebanking.ensa/accountservice/Soap/Request/AccountCreation/";
-    private static final String NAMESPACE_CONSULTATION="http://www.ebanking.ensa/accountservice/Soap/Request/AccountBalance/";
+    private static final String NAMESPACE_CONSULTATION="http://www.ebanking.ensa/accountservice/Soap/Request/AccountInfo/";
     private static final String NAMESPACE_CREANCIERS="http://www.ebanking.ensa/accountservice/Soap/Request/CreanciersList/";
     private static final String NAMESPACE_CREANCES="http://www.ebanking.ensa/accountservice/Soap/Request/CreancesList/";
 
@@ -87,13 +89,16 @@ public class CMIController {
     @PayloadRoot(namespace = NAMESPACE_CREATION, localPart = "AccountCreationRequest")
     @ResponsePayload
     public AccountCreationResponse createBankAccount(@RequestPayload AccountCreationRequest bankAccountReq) {
-        AccountCreationResponse accountCreationResponse = cmiService.createBankAccount(bankAccountReq);
-        return accountCreationResponse;
+        try {
+            return cmiService.createBankAccount(bankAccountReq);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @PayloadRoot(namespace = NAMESPACE_CONSULTATION, localPart = "AccountBalanceRequest")
+    @PayloadRoot(namespace = NAMESPACE_CONSULTATION, localPart = "AccountInfoRequest")
     @ResponsePayload
-    public AccountBalanceResponse consultBankAccount(@RequestPayload AccountBalanceRequest consultAccountReq) {
+    public AccountInfoResponse consultBankAccount(@RequestPayload AccountInfoRequest consultAccountReq) {
         return this.cmiService.consultBankAccount(consultAccountReq);
     }
 

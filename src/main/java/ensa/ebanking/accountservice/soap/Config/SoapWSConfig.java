@@ -41,7 +41,7 @@ public class SoapWSConfig extends WsConfigurerAdapter {
         DefaultWsdl11Definition defaultWsdl11Definition = new DefaultWsdl11Definition();
         defaultWsdl11Definition.setPortTypeName("CMI");
         defaultWsdl11Definition.setLocationUri("/cmi-soap/consultAccount");
-        defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/AccountBalance");
+        defaultWsdl11Definition.setTargetNamespace("http://www.ebanking.ensa/accountservice/Soap/Request/AccountInfo");
         defaultWsdl11Definition.setSchema(schema);
         return defaultWsdl11Definition;
     }
@@ -73,7 +73,7 @@ public class SoapWSConfig extends WsConfigurerAdapter {
 
     @Bean(name = "consultSchema")
     public XsdSchema schema2() {
-        return new SimpleXsdSchema(new ClassPathResource("xmlAccountBalanceSchemas.xsd"));
+        return new SimpleXsdSchema(new ClassPathResource("xmlAccountInfoSchemas.xsd"));
     }
 
     @Bean(name = "creanciersListSchema")

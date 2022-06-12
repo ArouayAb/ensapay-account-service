@@ -11,14 +11,11 @@ import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
 import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Enums.ValidRecharge;
-import ensa.ebanking.accountservice.Exceptions.CreanceAlreadyPaidException;
-import ensa.ebanking.accountservice.Exceptions.InvalidRechargeAmountException;
-import ensa.ebanking.accountservice.Exceptions.NotEnoughBalanceException;
-import ensa.ebanking.accountservice.Exceptions.WrongCreancierCategoryException;
+import ensa.ebanking.accountservice.Exceptions.*;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.MappingHelper;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceRequest;
-import ensa.ebanking.accountservice.soap.request.accountbalance.AccountBalanceResponse;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoRequest;
+import ensa.ebanking.accountservice.soap.request.accountinfo.AccountInfoResponse;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationRequest;
 import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreationResponse;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
@@ -123,37 +120,47 @@ public class CMIService {
         addCreance(phoneNumber, amount, user, creancier);
     }
 
-    public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) {
+    public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) throws IOException {
 
+        String accountNumber;
         try {
-            if(bankAccountHelper.findClientAccount(bankAccountReq.getPhoneNumber()) == null) {
-                bankAccountHelper.addClientAccountToXml(bankAccountReq.getPhoneNumber(), bankAccountReq.getName(), bankAccountReq.getBalance());
+            bankAccountHelper.findClientAccount(bankAccountReq.getPhoneNumber());
+        } catch (BankAccountNotFoundException be) {
+            accountNumber = bankAccountHelper.addClientAccountToXml(bankAccountReq.getPhoneNumber(), bankAccountReq.getName(), bankAccountReq.getBalance());
+            if(accountNumber == null) {
+                throw new BankAccountNotFoundException("Account number not found when creating");
             }
+            AccountCreationResponse bankAccountRes = new AccountCreationResponse();
+            bankAccountRes.setPhoneNumber(bankAccountReq.getPhoneNumber());
+            bankAccountRes.setName(bankAccountReq.getName());
+            bankAccountRes.setBalance(bankAccountReq.getBalance());
+            bankAccountRes.setAccountNumber(accountNumber);
+            return bankAccountRes;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        AccountCreationResponse bankAccountRes = new AccountCreationResponse();
-        bankAccountRes.setPhoneNumber(bankAccountReq.getPhoneNumber());
-        bankAccountRes.setName(bankAccountReq.getName());
-        bankAccountRes.setBalance(bankAccountReq.getBalance());
-        bankAccountRes.setAccountNumber(String.valueOf(ThreadLocalRandom.current().nextLong(0L, 9999999999L)));
-        return bankAccountRes;
+        throw new BankAccountAlreadyExistException("Bank account with this phone number already exist");
     }
 
-    public AccountBalanceResponse consultBankAccount(AccountBalanceRequest consultAccountReq) {
+    public AccountInfoResponse consultBankAccount(AccountInfoRequest consultAccountReq) {
 
-        double balance = 0;
+        Double balance;
+        String accountNumber;
         try {
-            if(bankAccountHelper.findClientAccount(consultAccountReq.getPhoneNumber()) != null) {
-                balance = bankAccountHelper.findClientAccountBalance(consultAccountReq.getPhoneNumber());
+            balance = bankAccountHelper.findClientAccountBalance(consultAccountReq.getPhoneNumber());
+            accountNumber = bankAccountHelper.findClientAccountAccountNumber(consultAccountReq.getPhoneNumber());
+            if(accountNumber == null || balance == null) {
+                throw new BankAccountNotFoundException("Account info not found when consulting");
             }
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
-        AccountBalanceResponse consultAccountRes = new AccountBalanceResponse();
+        AccountInfoResponse consultAccountRes = new AccountInfoResponse();
         consultAccountRes.setBalance(balance);
+        consultAccountRes.setAccountNumber(accountNumber);
         return consultAccountRes;
     }
 
@@ -234,196 +241,196 @@ public class CMIService {
         //Creanciers
         creancierDAO.save(new Creancier(
                 1,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 2,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 3,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 4,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 5,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 6,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 7,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 8,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 9,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 10,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 11,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 12,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 13,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 14,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 15,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 16,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 17,
-                "Facture - Mobile",
+                "Mobile",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 18,
-                "Facture - Fixe",
+                "Fixe",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 19,
-                "Facture - Internet ADSL",
+                "Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 20,
-                "Facture - Fibre Optique",
+                "Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 21,
-                "Recharge - *1",
+                "*1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 22,
-                "Recharge - *2",
+                "*2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 23,
-                "Recharge - *3",
+                "*3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 24,
-                "Recharge - *6",
+                "*6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(3L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 25,
-                "Facture - Eau",
+                "Eau",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(4L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 26,
-                "Facture - Electricité",
+                "Electricité",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(4L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 27,
-                "ALCS - Donation",
+                "Donation",
                 CreancierCategory.DONATION,
                 serviceProviderDAO.findById(5L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 28,
-                "AAMH - Donation",
+                "Donation",
                 CreancierCategory.DONATION,
                 serviceProviderDAO.findById(6L).get()
         ));
