@@ -201,7 +201,7 @@ public class CMIService {
                 "/resources/static/images/inwi-logo.jpeg",
                 "Inwi",
                 "INWI",
-                "0623487634"));
+                "0615354856"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
@@ -215,21 +215,21 @@ public class CMIService {
                 "/resources/static/images/radeema-logo.jpeg",
                 "Régie Autonome de Distribution d'Eau et d'Electricité de MArrakech",
                 "RADEEMA",
-                "0623487634"));
+                "0698524763"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 5L,
                 "/resources/static/images/alcs-logo.jpeg",
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
-                "0687678456"));
+                "0624156895"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 6L,
                 "/resources/static/images/aamh-logo.jpeg",
                 "Association Amal Marocaine des Handicapés",
                 "AAMH",
-                "0687678456"));
+                "0655426853"));
 
         //Creanciers
         creancierDAO.save(new Creancier(
