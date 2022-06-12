@@ -192,43 +192,43 @@ public class CMIService {
         // ServiceProviders
         serviceProviderDAO.save(new ServiceProvider(
                 1L,
-                "/resources/static/images/IAM.jpeg",
+                "/resources/static/images/iam-logo.jpeg",
                 "Maroc Telecom",
                 "IAM",
                 "0698712345"));
         serviceProviderDAO.save(new ServiceProvider(
                 2L,
-                "/resources/static/images/inwi.jpeg",
-                "INWI",
+                "/resources/static/images/inwi-logo.jpeg",
+                "Inwi",
                 "INWI",
                 "0623487634"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
-                "/resources/static/images/.jpeg",
+                "/resources/static/images/orange-logo.jpeg",
                 "Orange",
-                "Orange",
+                "ORANGE",
                 "0623487634"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 4L,
-                "/resources/static/images/.jpeg",
-                "Radeema",
-                "Radeema",
+                "/resources/static/images/radeema-logo.jpeg",
+                "Régie Autonome de Distribution d'Eau et d'Electricité de MArrakech",
+                "RADEEMA",
                 "0623487634"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 5L,
-                "/resources/static/images/alcs.jpeg",
+                "/resources/static/images/alcs-logo.jpeg",
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
                 "0687678456"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 6L,
-                "/resources/static/images/alcs.jpeg",
-                "Association de Lutte Contre le SIDA",
-                "ALCS",
+                "/resources/static/images/aamh-logo.jpeg",
+                "Association Amal Marocaine des Handicapés",
+                "AAMH",
                 "0687678456"));
 
         //Creanciers
@@ -240,115 +240,192 @@ public class CMIService {
         ));
 
         creancierDAO.save(new Creancier(
-                1,
+                2,
                 "Facture - Fixe",
                 CreancierCategory.FACTURE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                1,
-                "Facture - Internet ADSL",
-                CreancierCategory.FACTURE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                1,
-                "Facture - Fibre Optique",
-                CreancierCategory.FACTURE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                2,
-                "Recharge - *1",
-                CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
                 3,
-                "Recharge - *2",
-                CreancierCategory.RECHARGE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                4,
-                "Recharge - *3",
-                CreancierCategory.RECHARGE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                5,
-                "Recharge - *6",
-                CreancierCategory.RECHARGE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                1,
-                "Facture - Mobile",
-                CreancierCategory.FACTURE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                1,
-                "Facture - Fixe",
-                CreancierCategory.FACTURE,
-                serviceProviderDAO.findById(1L).get()
-        ));
-
-        creancierDAO.save(new Creancier(
-                1,
                 "Facture - Internet ADSL",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
-                1,
+                4,
                 "Facture - Fibre Optique",
                 CreancierCategory.FACTURE,
                 serviceProviderDAO.findById(1L).get()
         ));
 
         creancierDAO.save(new Creancier(
+                5,
+                "Recharge - *1",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                6,
+                "Recharge - *2",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
                 7,
+                "Recharge - *3",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                8,
+                "Recharge - *6",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(1L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                9,
+                "Facture - Mobile",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(2L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                10,
+                "Facture - Fixe",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(2L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                11,
+                "Facture - Internet ADSL",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(2L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                12,
+                "Facture - Fibre Optique",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(2L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                13,
                 "Recharge - *1",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
-                8,
+                14,
                 "Recharge - *2",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
-                9,
+                15,
                 "Recharge - *3",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
-                10,
+                16,
                 "Recharge - *6",
                 CreancierCategory.RECHARGE,
                 serviceProviderDAO.findById(2L).get()
         ));
 
         creancierDAO.save(new Creancier(
-                11,
+                17,
+                "Facture - Mobile",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                18,
+                "Facture - Fixe",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                19,
+                "Facture - Internet ADSL",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                20,
+                "Facture - Fibre Optique",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                21,
+                "Recharge - *1",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                22,
+                "Recharge - *2",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                23,
+                "Recharge - *3",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                24,
+                "Recharge - *6",
+                CreancierCategory.RECHARGE,
+                serviceProviderDAO.findById(3L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                25,
+                "Facture - Eau",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(4L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                26,
+                "Facture - Electricité",
+                CreancierCategory.FACTURE,
+                serviceProviderDAO.findById(4L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                27,
                 "ALCS - Donation",
                 CreancierCategory.DONATION,
-                serviceProviderDAO.findById(3L).get()
+                serviceProviderDAO.findById(5L).get()
+        ));
+
+        creancierDAO.save(new Creancier(
+                28,
+                "AAMH - Donation",
+                CreancierCategory.DONATION,
+                serviceProviderDAO.findById(6L).get()
         ));
     }
 }
