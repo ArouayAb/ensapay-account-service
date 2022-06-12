@@ -18,7 +18,10 @@ public class MappingHelper {
     public static void mapServiceProviderForCreanciersList(ServiceProvider serviceProvider, CreanciersListResponse.Creancier creancier) {
         CreanciersListResponse.Creancier.ServiceProvider serviceProviderRes = new CreanciersListResponse.Creancier.ServiceProvider();
         serviceProviderRes.setCode(serviceProvider.getCode());
+        serviceProviderRes.setImage(serviceProvider.getImage());
         serviceProviderRes.setName(serviceProvider.getName());
+        serviceProviderRes.setSurname(serviceProvider.getName());
+        serviceProviderRes.setPhoneNumber(serviceProvider.getPhoneNumber());
         creancier.setServiceProvider(serviceProviderRes);
     }
 
@@ -33,7 +36,10 @@ public class MappingHelper {
                                                           CreancesListResponse.Creance.Creancier creancierRes) {
         CreancesListResponse.Creance.Creancier.ServiceProvider serviceProviderRes = new CreancesListResponse.Creance.Creancier.ServiceProvider();
         serviceProviderRes.setCode(serviceProvider.getCode());
+        serviceProviderRes.setImage(serviceProvider.getImage());
         serviceProviderRes.setName(serviceProvider.getName());
+        serviceProviderRes.setSurname(serviceProvider.getSurname());
+        serviceProviderRes.setPhoneNumber(serviceProvider.getPhoneNumber());
         creancierRes.setServiceProvider(serviceProviderRes);
     }
 
@@ -61,6 +67,7 @@ public class MappingHelper {
                             gregory);
             creanceRes.setDueDate(calendar);
 
+            creanceRes.setAmount(creance.getAmount());
             MappingHelper.mapCreancierForCreancesList(creance.getCreancier(), creanceRes);
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
