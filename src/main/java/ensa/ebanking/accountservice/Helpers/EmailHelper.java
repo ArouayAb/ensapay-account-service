@@ -40,17 +40,21 @@ public class EmailHelper {
     }
 
     public void sendEmail(String toEmail, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom(senderEmail);
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
+            message.setFrom(senderEmail);
+            message.setTo(toEmail);
+            message.setSubject(subject);
+            message.setText(body);
 
-        mailSender.send(message);
+            mailSender.send(message);
 
-        System.out.println("email sent to : " + toEmail);
-        System.out.println("subject : " + subject);
-        System.out.println("body : " + body);
+            System.out.println("email sent to : " + toEmail);
+            System.out.println("subject : " + subject);
+            System.out.println("body : " + body);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
