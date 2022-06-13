@@ -20,7 +20,7 @@ public class MappingHelper {
         serviceProviderRes.setCode(serviceProvider.getCode());
         serviceProviderRes.setImage(serviceProvider.getImage());
         serviceProviderRes.setName(serviceProvider.getName());
-        serviceProviderRes.setSurname(serviceProvider.getName());
+        serviceProviderRes.setSurname(serviceProvider.getSurname());
         serviceProviderRes.setPhoneNumber(serviceProvider.getPhoneNumber());
         creancier.setServiceProvider(serviceProviderRes);
     }
