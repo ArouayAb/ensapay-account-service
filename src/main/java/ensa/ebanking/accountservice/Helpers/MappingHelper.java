@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.sql.Date;
 import java.util.GregorianCalendar;
 
 @Component
@@ -61,7 +62,7 @@ public class MappingHelper {
             creanceRes.setCreanceStatus(creance.getCreanceStatus().name());
 
             GregorianCalendar gregory = new GregorianCalendar();
-            gregory.setTime(creance.getDueDate());
+            gregory.setTime(Date.valueOf(creance.getDate().toLocalDate()));
             XMLGregorianCalendar calendar = DatatypeFactory.newInstance()
                     .newXMLGregorianCalendar(
                             gregory);

@@ -197,6 +197,36 @@ public class BankAccountHelper {
         return bankAccount.getAccountNumber();
     }
 
+    public  void feedClientAccount(String phoneNumber, Double amount) throws IOException {
+
+        BankAccount clientBankAccount = findClientAccount(phoneNumber);
+
+        if(clientBankAccount == null) {
+            throw new BankAccountNotFoundException("Client bank account not found");
+        }
+
+        clientBankAccount.setBalance(clientBankAccount.getBalance() + amount);
+
+
+        saveClientBankAccount(clientBankAccount);
+
+    }
+
+    public  void feedServiceAccount(String phoneNumber, Double amount) throws IOException {
+
+        BankAccount serviceBankAccount = findServiceAccount(phoneNumber);
+
+        if(serviceBankAccount == null) {
+            throw new BankAccountNotFoundException("Service bank account not found");
+        }
+
+        serviceBankAccount.setBalance(serviceBankAccount.getBalance() + amount);
+
+
+        saveServiceBankAccount(serviceBankAccount);
+
+    }
+
     public void updateBankAccountBalance(String phoneNumber, String targetPhoneNumber, Double amount) throws IOException {
         BankAccount clientBankAccount = findClientAccount(phoneNumber);
         BankAccount serviceBankAccount = findServiceAccount(targetPhoneNumber);

@@ -4,7 +4,7 @@ import ensa.ebanking.accountservice.Enums.CreanceStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Creance {
@@ -13,7 +13,7 @@ public class Creance {
     private Long code;
 
     @NotNull
-    private Date dueDate;
+    private LocalDateTime date;
 
     @NotNull
     private Double amount;
@@ -27,9 +27,18 @@ public class Creance {
     @ManyToOne
     private Creancier creancier;
 
-    public Creance(Long code, Date dueDate, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier, Double amount) {
+    /*public Creance(Long code, Date date, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier, Double amount) {
         this.code = code;
-        this.dueDate = dueDate;
+        this.date = date;
+        this.creanceStatus = creanceStatus;
+        this.clientProfile = clientProfile;
+        this.creancier = creancier;
+        this.amount = amount;
+    }
+*/
+    public Creance(Long code, LocalDateTime date, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier, Double amount) {
+        this.code = code;
+        this.date = date;
         this.creanceStatus = creanceStatus;
         this.clientProfile = clientProfile;
         this.creancier = creancier;
@@ -51,12 +60,12 @@ public class Creance {
         this.code = code;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public CreanceStatus getCreanceStatus() {
