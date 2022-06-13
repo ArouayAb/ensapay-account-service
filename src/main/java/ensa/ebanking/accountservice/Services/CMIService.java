@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -93,7 +94,7 @@ public class CMIService {
         creance.setClientProfile(user.getClientProfile());
         creance.setCreancier(creancier);
         creance.setCreanceStatus(CreanceStatus.COMPLETED);
-        creance.setDueDate(Date.valueOf(LocalDate.now()));
+        creance.setDate(LocalDateTime.now());
 
         bankAccountHelper.updateBankAccountBalance(phoneNumber, creance.getCreancier().getServiceProvider().getPhoneNumber(), creance.getAmount());
         creanceDAO.save(creance);

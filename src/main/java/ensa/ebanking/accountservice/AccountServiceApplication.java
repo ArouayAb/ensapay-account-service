@@ -18,14 +18,19 @@ import ensa.ebanking.accountservice.Services.ClientService;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
+@EnableScheduling
+@EnableAutoConfiguration
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {
@@ -90,7 +95,7 @@ public class AccountServiceApplication {
 
 			creanceDAO.save(new Creance(
 					1L,
-					Date.valueOf(LocalDate.of(2022, 10, 1)),
+					LocalDateTime.of(2022, 10, 1,12,20,16),
 					CreanceStatus.UNPAID,
 					clientProfileDAO.findById(1L).get(),
 					creancierDAO.findById(1L).get(),
@@ -98,8 +103,32 @@ public class AccountServiceApplication {
 			));
 			creanceDAO.save(new Creance(
 					2L,
-					Date.valueOf(LocalDate.of(2022, 9, 1)),
+					LocalDateTime.of(2022, 9, 1,2,15,3),
 					CreanceStatus.UNPAID,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
+			creanceDAO.save(new Creance(
+					3L,
+					LocalDateTime.of(2022, 9, 1,2,15,3),
+					CreanceStatus.PENDING,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
+			creanceDAO.save(new Creance(
+					4L,
+					LocalDateTime.of(2022, 9, 1,2,15,3),
+					CreanceStatus.PENDING,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
+			creanceDAO.save(new Creance(
+					5L,
+					LocalDateTime.of(2022, 9, 1,2,20,10),
+					CreanceStatus.PENDING,
 					clientProfileDAO.findById(1L).get(),
 					creancierDAO.findById(1L).get(),
 					200D

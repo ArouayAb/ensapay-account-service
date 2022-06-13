@@ -1,17 +1,1 @@
-<BankAccounts>
-    <bankAccount phoneNumber="123">
-        <accountNumber>123123</accountNumber>
-        <name>name</name>
-        <balance>1222.5324</balance>
-    </bankAccount>
-    <bankAccount phoneNumber="0111222333">
-        <accountNumber>123123</accountNumber>
-        <name>firstuser</name>
-        <balance>0.23</balance>
-    </bankAccount>
-    <bankAccount phoneNumber="0111232333">
-        <accountNumber>8498834395</accountNumber>
-        <name>hehehehe</name>
-        <balance>666.0</balance>
-    </bankAccount>
-</BankAccounts>
+<BankAccounts><bankAccount phoneNumber="123"><accountNumber>123123</accountNumber><name>name</name><balance>1222.5324</balance></bankAccount><bankAccount phoneNumber="0111222333"><accountNumber>123123</accountNumber><name>firstuser</name><balance>33200.229999999996</balance></bankAccount><bankAccount phoneNumber="0111232333"><accountNumber>8498834395</accountNumber><name>hehehehe</name><balance>666.0</balance></bankAccount></BankAccounts>
