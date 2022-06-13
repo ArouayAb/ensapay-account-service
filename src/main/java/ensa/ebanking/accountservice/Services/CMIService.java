@@ -199,41 +199,41 @@ public class CMIService {
         // ServiceProviders
         serviceProviderDAO.save(new ServiceProvider(
                 1L,
-                "/resources/static/images/iam-logo.jpeg",
+                "resources/static/images/iam-logo.jpeg",
                 "Maroc Telecom",
                 "IAM",
                 "0698712345"));
         serviceProviderDAO.save(new ServiceProvider(
                 2L,
-                "/resources/static/images/inwi-logo.jpeg",
+                "resources/static/images/inwi-logo.jpeg",
                 "Inwi",
                 "INWI",
                 "0615354856"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
-                "/resources/static/images/orange-logo.jpeg",
+                "resources/static/images/orange-logo.jpeg",
                 "Orange",
                 "ORANGE",
                 "0623487634"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 4L,
-                "/resources/static/images/radeema-logo.jpeg",
+                "resources/static/images/radeema-logo.jpeg",
                 "Régie Autonome de Distribution d'Eau et d'Electricité de MArrakech",
                 "RADEEMA",
                 "0698524763"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 5L,
-                "/resources/static/images/alcs-logo.jpeg",
+                "resources/static/images/alcs-logo.jpeg",
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
                 "0624156895"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 6L,
-                "/resources/static/images/aamh-logo.jpeg",
+                "resources/static/images/aamh-logo.jpeg",
                 "Association Amal Marocaine des Handicapés",
                 "AAMH",
                 "0655426853"));
