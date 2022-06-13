@@ -109,6 +109,30 @@ public class AccountServiceApplication {
 					creancierDAO.findById(1L).get(),
 					200D
 			));
+			creanceDAO.save(new Creance(
+					3L,
+					LocalDateTime.of(2022, 9, 1,2,15,3),
+					CreanceStatus.PENDING,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
+			creanceDAO.save(new Creance(
+					4L,
+					LocalDateTime.of(2022, 9, 1,2,15,3),
+					CreanceStatus.PENDING,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
+			creanceDAO.save(new Creance(
+					5L,
+					LocalDateTime.of(2022, 9, 1,2,20,10),
+					CreanceStatus.PENDING,
+					clientProfileDAO.findById(1L).get(),
+					creancierDAO.findById(1L).get(),
+					200D
+			));
 
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name2", "surname1", "0111222333", "email1@email.com"));
 //			clientService.registerClient(new ClientProfileDTO(ProductType.HSSAB1, "name1", "surname1", "0111222333", "email1@email.com"));

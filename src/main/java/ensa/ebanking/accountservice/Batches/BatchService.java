@@ -8,6 +8,7 @@ import ensa.ebanking.accountservice.Entities.Creance;
 import ensa.ebanking.accountservice.Entities.Creancier;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
+import ensa.ebanking.accountservice.Enums.Role;
 import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -31,12 +33,14 @@ public class BatchService {
     @Autowired
     private  BankAccountHelper bankAccountHelper;
 
+
     @Scheduled(fixedDelay = 5000)
     public void cancel_duplicated_transaction() {
         // does who have status PENDING
         List<Creance> creances = creanceDAO.findPendingCreanceOrderedByDateAsc(CreanceStatus.PENDING,"date");
         for (int i = 0; i < creances.size(); i++) {
             Creance creance = creances.get(i);
+            if (!creance.getCreanceStatus().equals(CreanceStatus.PENDING)) continue;
             ClientProfile client = creance.getClientProfile();
             Long clientId = client.getId();
 
@@ -59,7 +63,9 @@ public class BatchService {
                 LocalDateTime dateTime1 = duplicatedCreance.getDate();
                 Long code1 = duplicatedCreance.getCode();
                 int min1 = dateTime1.getMinute();
-                if (min1 - min <= 1 && clientId.equals(clientId1) && codeCreancier.equals(codeCreancier1) && creance.getAmount().equals(duplicatedCreance.getAmount())) {
+                int differenceSeconde= (int) ChronoUnit.SECONDS.between(dateTime,dateTime1);
+                System.out.println(differenceSeconde);
+                if (Math.abs(differenceSeconde) <= 60 && clientId.equals(clientId1) && codeCreancier.equals(codeCreancier1) && creance.getAmount().equals(duplicatedCreance.getAmount())) {
 
                     try {
                         bankAccountHelper.feedClientAccount(users.get(0).getPhoneNumber(), duplicatedCreance.getAmount());
@@ -88,19 +94,18 @@ public class BatchService {
 
 
 
-    Double salary =10000D;
-    @Scheduled(fixedDelay = 50000)
+
+    @Scheduled(fixedDelay = 5000)
     public void UpdateSoldByEndOfMonth() {
 
-        List<ClientProfile> clientList=clientProfileDAO.findAll();
+        List<User> users=userDAO.findByRole(Role.CLIENT);
 
-        for (int i = 0; i < clientList.size(); i++) {
-            ClientProfile client = clientList.get(i);
-            List<User> users = userDAO.findByClientProfile(client);
+        for (User user :users) {
+
             if (users.size() == 0)
                 throw new RuntimeException();
             try {
-                bankAccountHelper.feedClientAccount(users.get(0).getPhoneNumber(), salary);
+                bankAccountHelper.feedClientAccount(user.getPhoneNumber(),Double.parseDouble(user.getClientProfile().getProductType().plafond));
             } catch (IOException e) {
                 e.printStackTrace();
             }
