@@ -1,7 +1,6 @@
 package ensa.ebanking.accountservice.DAO;
 
 import ensa.ebanking.accountservice.Entities.ClientProfile;
-import ensa.ebanking.accountservice.Entities.Profile;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

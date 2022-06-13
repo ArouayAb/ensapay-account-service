@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.ebanking.ensa/accountservice/Soap/Request/AccountInfo/"
+           xmlns:tns="http://www.ebanking.ensa/accountservice/Soap/Request/AccountInfo/"
+           elementFormDefault="qualified">
+
+    <xsd:element name="AccountInfoRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="phoneNumber" type="xsd:string" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="AccountInfoResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="balance" type="xsd:double" />
+                <xsd:element name="accountNumber" type="xs:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xs:schema>

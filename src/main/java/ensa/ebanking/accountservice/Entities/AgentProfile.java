@@ -2,7 +2,6 @@ package ensa.ebanking.accountservice.Entities;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 public class AgentProfile extends Profile{

@@ -1,10 +1,6 @@
 package ensa.ebanking.accountservice.DTO;
 
-import ensa.ebanking.accountservice.Enums.ProductType;
-
-import javax.persistence.OneToMany;
 import java.sql.Date;
-import java.util.List;
 
 public class AgentProfileDTO {
 
