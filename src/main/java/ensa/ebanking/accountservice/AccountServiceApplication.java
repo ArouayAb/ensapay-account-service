@@ -30,7 +30,6 @@ import java.time.LocalDateTime;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableAutoConfiguration
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {
