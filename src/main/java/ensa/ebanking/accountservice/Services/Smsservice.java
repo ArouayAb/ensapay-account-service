@@ -65,8 +65,9 @@ public class Smsservice {
 				vonageNumber,
 				"ENSA PAY Verification Code : " + OTP);
 
-		SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);
+
 		if (user != null) {
+			SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);
 			if (response.getMessages().get(0).getStatus() == MessageStatus.OK) {
 				System.out.println("Message sent successfully.");
 				smsDao.save(otpSms);
