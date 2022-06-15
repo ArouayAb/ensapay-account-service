@@ -22,6 +22,7 @@ import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListReques
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListResponse;
 import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -53,6 +54,9 @@ public class CMIService {
 
     @Autowired
     UserDAO userDAO;
+
+    @Autowired
+    Environment env;
 
     public void payFacture(String phoneNumber, List<Object> creanceCodes) throws IOException {
         for (Object creanceCode: creanceCodes) {
@@ -200,41 +204,41 @@ public class CMIService {
         // ServiceProviders
         serviceProviderDAO.save(new ServiceProvider(
                 1L,
-                "resources/static/images/iam-logo.jpeg",
+                env.getProperty("iam-logo-url"),
                 "Maroc Telecom",
                 "IAM",
                 "0698712345"));
         serviceProviderDAO.save(new ServiceProvider(
                 2L,
-                "resources/static/images/inwi-logo.jpeg",
+                env.getProperty("inwi-logo-url"),
                 "Inwi",
                 "INWI",
                 "0615354856"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 3L,
-                "resources/static/images/orange-logo.jpeg",
+                env.getProperty("orange-logo-url"),
                 "Orange",
                 "ORANGE",
                 "0623487634"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 4L,
-                "resources/static/images/radeema-logo.jpeg",
+                env.getProperty("radeema-logo-url"),
                 "Régie Autonome de Distribution d'Eau et d'Electricité de MArrakech",
                 "RADEEMA",
                 "0698524763"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 5L,
-                "resources/static/images/alcs-logo.jpeg",
+                env.getProperty("alcs-logo-url"),
                 "Association de Lutte Contre le SIDA",
                 "ALCS",
                 "0624156895"));
 
         serviceProviderDAO.save(new ServiceProvider(
                 6L,
-                "resources/static/images/aamh-logo.jpeg",
+                env.getProperty("aamh-logo-url"),
                 "Association Amal Marocaine des Handicapés",
                 "AAMH",
                 "0655426853"));
