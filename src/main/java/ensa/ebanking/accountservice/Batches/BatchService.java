@@ -34,7 +34,7 @@ public class BatchService {
     private  BankAccountHelper bankAccountHelper;
 
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(cron = "0 0 0 * * *")
     public void cancel_duplicated_transaction() {
         // does who have status PENDING
         List<Creance> creances = creanceDAO.findPendingCreanceOrderedByDateAsc(CreanceStatus.PENDING,"date");
@@ -95,7 +95,7 @@ public class BatchService {
 
 
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(cron = "0 0 0 1 * *")
     public void UpdateSoldByEndOfMonth() {
 
         List<User> users=userDAO.findByRole(Role.CLIENT);

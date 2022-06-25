@@ -48,7 +48,7 @@ public class EmailHelper {
             message.setSubject(subject);
             message.setText(body);
 
-            mailSender.send(message);
+            //mailSender.send(message);
 
             System.out.println("email sent to : " + toEmail);
             System.out.println("subject : " + subject);

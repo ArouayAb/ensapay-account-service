@@ -51,6 +51,7 @@ public class Smsservice {
 	//send message to number
 	public int sendsms(String phone) throws IOException {
 		String OTP = otp();
+		System.out.println(OTP);
 		User user = userDAO.findByPhoneNumber(phone);
 		String vonageNumber = "212" + phone.substring(1);
 		Calendar date = Calendar.getInstance();

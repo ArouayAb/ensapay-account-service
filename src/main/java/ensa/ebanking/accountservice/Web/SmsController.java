@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
+@RequestMapping("verification")
 public class SmsController {
 
     private Smsservice smsservice;
@@ -20,7 +21,7 @@ public class SmsController {
 
     }
 
-    @PostMapping("/send_code")
+    @PostMapping("/send-code")
     @ResponseBody
     public ResponseEntity<String> sendmessage(@RequestBody String jsonBody) throws IOException {
         String phone=(String) new JSONObject(jsonBody).get("phone");
@@ -36,7 +37,7 @@ public class SmsController {
     }
 
 
-    @PostMapping("/otp_verification")
+    @PostMapping("/otp-verification")
     @ResponseBody
     public ResponseEntity<String> verifyOtp(@RequestBody String jsonBody) throws IOException {
         String phone=(String) new JSONObject(jsonBody).get("phone");

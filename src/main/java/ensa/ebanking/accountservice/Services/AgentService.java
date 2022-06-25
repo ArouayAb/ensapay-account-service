@@ -8,9 +8,11 @@ import ensa.ebanking.accountservice.Entities.AgentProfile;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
+import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,13 +28,16 @@ public class AgentService {
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
     private final EmailHelper emailHelper;
+    private final BankAccountHelper bankAccountHelper;
 
-    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper) {
+
+    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper, BankAccountHelper bankAccountHelper) {
         this.agentProfileDAO = agentProfileDAO;
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
         this.clientProfileDAO = clientProfileDAO;
         this.emailHelper = emailHelper;
+        this.bankAccountHelper = bankAccountHelper;
     }
 
     public void registerAgent(AgentProfileDTO apdto) {
@@ -65,7 +70,7 @@ public class AgentService {
         return clientProfileDAO.findClientProfileByAccountStatus(AccountStatus.INACTIVE);
     }
 
-    public ClientProfile validAccount (String json){
+    public ClientProfile validAccount (String json) throws RuntimeException{
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
@@ -76,6 +81,13 @@ public class AgentService {
                 this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("validation"),
                         email.getJSONObject("body").getString("validation"));
+                List<User> users = userDAO.findByClientProfile(client);
+                if(users.size() > 0){
+                    User user = users.get(0);
+                    this.bankAccountHelper.addClientAccountToXml(user.getPhoneNumber(), user.getClientProfile().getName(),0D);
+                } else {
+                    throw new RuntimeException("Catastrophic failure, client doesn't have a user ?!!");
+                }
                 return clientProfileDAO.save(client);
             }
             else {
@@ -95,11 +107,12 @@ public class AgentService {
             Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
-                this.emailHelper.sendEmail(client.getEmail(),
+/*                this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("rejection"),
-                        email.getJSONObject("body").getString("rejection"));
-                userDAO.deleteClientById(id);
-                clientProfileDAO.deleteClientProfileById(id);
+                        email.getJSONObject("body").getString("rejection"));*/
+                List<User> users = userDAO.findByClientProfile(client);
+                userDAO.deleteById(users.get(0).getId());
+                clientProfileDAO.deleteClientProfileById(users.get(0).getClientProfile().getId());
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
