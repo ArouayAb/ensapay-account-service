@@ -69,7 +69,7 @@ public class AgentService {
         return clientProfileDAO.findClientProfileByAccountStatus(AccountStatus.INACTIVE);
     }
 
-    public ClientProfile validAccount (String json) throws RuntimeException{
+    public User validAccount (String json) throws RuntimeException{
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
@@ -80,7 +80,8 @@ public class AgentService {
                 this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("validation"),
                         email.getJSONObject("body").getString("validation"));
-                return clientProfileDAO.save(client);
+                clientProfileDAO.save(client);
+                return userDAO.findByClientProfile(client).get(0);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -91,7 +92,7 @@ public class AgentService {
         }
     }
 
-    public ClientProfile rejectAccount (String json){
+    public User rejectAccount (String json){
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
@@ -102,7 +103,8 @@ public class AgentService {
                 this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("rejection"),
                         email.getJSONObject("body").getString("rejection"));
-                return clientProfileDAO.save(client);
+                clientProfileDAO.save(client);
+                return userDAO.findByClientProfile(client).get(0);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);

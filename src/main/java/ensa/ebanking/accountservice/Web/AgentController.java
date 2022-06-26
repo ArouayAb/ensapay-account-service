@@ -4,6 +4,7 @@ import ensa.ebanking.accountservice.DTO.AgentProfileDTO;
 
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 
+import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Services.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +67,7 @@ class AgentController {
 
     @RequestMapping(value = "/activate-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<ClientProfile> activate(@RequestBody String json){
+    public ResponseEntity<User> activate(@RequestBody String json){
         try{
             return ResponseEntity.ok(agentService.validAccount(json));
         } catch (Exception e) {
@@ -77,7 +78,7 @@ class AgentController {
 
     @RequestMapping(value = "/reject-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public ResponseEntity<ClientProfile> reject(@RequestBody String json){
+    public ResponseEntity<User> reject(@RequestBody String json){
         try{
             return ResponseEntity.ok(agentService.rejectAccount(json));
         } catch (Exception e) {
