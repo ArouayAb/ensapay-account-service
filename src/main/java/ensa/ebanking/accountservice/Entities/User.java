@@ -31,7 +31,7 @@ public class User implements Serializable {
     @OneToOne
     private AdminProfile adminProfile;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
     private ClientProfile clientProfile;
 
     public Role getRole() {

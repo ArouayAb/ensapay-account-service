@@ -8,6 +8,7 @@ import ensa.ebanking.accountservice.Entities.AgentProfile;
 import ensa.ebanking.accountservice.Entities.ClientProfile;
 import ensa.ebanking.accountservice.Entities.User;
 import ensa.ebanking.accountservice.Enums.AccountStatus;
+import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
@@ -26,13 +27,16 @@ public class AgentService {
     private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
     private final EmailHelper emailHelper;
+    private final BankAccountHelper bankAccountHelper;
 
-    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper) {
+
+    public AgentService(AgentProfileDAO agentProfileDAO, UserDAO userDAO, PasswordEncoder passwordEncoder, ClientProfileDAO clientProfileDAO, EmailHelper emailHelper, BankAccountHelper bankAccountHelper) {
         this.agentProfileDAO = agentProfileDAO;
         this.userDAO = userDAO;
         this.passwordEncoder = passwordEncoder;
         this.clientProfileDAO = clientProfileDAO;
         this.emailHelper = emailHelper;
+        this.bankAccountHelper = bankAccountHelper;
     }
 
     public void registerAgent(AgentProfileDTO apdto) {
@@ -65,7 +69,7 @@ public class AgentService {
         return clientProfileDAO.findClientProfileByAccountStatus(AccountStatus.INACTIVE);
     }
 
-    public ClientProfile validAccount (String json){
+    public ClientProfile validAccount (String json) throws RuntimeException{
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
@@ -81,25 +85,24 @@ public class AgentService {
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    public void rejectAccount (String json){
+    public ClientProfile rejectAccount (String json){
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
             Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
+                client.setAccountStatus(AccountStatus.REJECTED);
                 this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("rejection"),
                         email.getJSONObject("body").getString("rejection"));
-                userDAO.deleteClientById(id);
-                clientProfileDAO.deleteClientProfileById(id);
+                return clientProfileDAO.save(client);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);

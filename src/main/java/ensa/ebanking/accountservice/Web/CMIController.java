@@ -12,8 +12,10 @@ import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListRe
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -86,21 +88,42 @@ public class CMIController {
         return ResponseEntity.status(200).build();
     }
 
-    @PayloadRoot(namespace = NAMESPACE_CREATION, localPart = "AccountCreationRequest")
-    @ResponsePayload
-    public AccountCreationResponse createBankAccount(@RequestPayload AccountCreationRequest bankAccountReq) {
+    @PostMapping("/create-bank-account")
+    ResponseEntity<?> createBankAccount(@RequestBody String json) {
         try {
-            return cmiService.createBankAccount(bankAccountReq);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            cmiService.createBankAccount(json);
+            return ResponseEntity.status(200).build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 
-    @PayloadRoot(namespace = NAMESPACE_CONSULTATION, localPart = "AccountInfoRequest")
-    @ResponsePayload
-    public AccountInfoResponse consultBankAccount(@RequestPayload AccountInfoRequest consultAccountReq) {
-        return this.cmiService.consultBankAccount(consultAccountReq);
+    @RequestMapping(value = "/consult-balance", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    ResponseEntity<Double> consultBalance(@RequestBody String json) {
+        try {
+            return ResponseEntity.ok(cmiService.consultBankAccount(json));
+        } catch(Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
+
+//    @PayloadRoot(namespace = NAMESPACE_CREATION, localPart = "AccountCreationRequest")
+//    @ResponsePayload
+//    public AccountCreationResponse createBankAccount(@RequestPayload AccountCreationRequest bankAccountReq) {
+//        try {
+//            return cmiService.createBankAccount(bankAccountReq);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+//    @PayloadRoot(namespace = NAMESPACE_CONSULTATION, localPart = "AccountInfoRequest")
+//    @ResponsePayload
+//    public AccountInfoResponse consultBankAccount(@RequestPayload AccountInfoRequest consultAccountReq) {
+//        return this.cmiService.consultBankAccount(consultAccountReq);
+//    }
 
     @PayloadRoot(namespace = NAMESPACE_CREANCIERS, localPart = "CreanciersListRequest")
     @ResponsePayload

@@ -6,9 +6,12 @@ import ensa.ebanking.accountservice.Entities.ClientProfile;
 
 import ensa.ebanking.accountservice.Services.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,12 +64,27 @@ class AgentController {
         agentService.registerAgent(apdto);
     }
 
-    @PutMapping("/activate-account")
+    @RequestMapping(value = "/activate-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public ClientProfile activate(@RequestBody String json){return agentService.validAccount(json);}
+    public ResponseEntity<ClientProfile> activate(@RequestBody String json){
+        try{
+            return ResponseEntity.ok(agentService.validAccount(json));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
-    @PutMapping("/reject-account")
-    public void reject(@RequestBody String json){agentService.rejectAccount(json);}
+    @RequestMapping(value = "/reject-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<ClientProfile> reject(@RequestBody String json){
+        try{
+            return ResponseEntity.ok(agentService.rejectAccount(json));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     @GetMapping("/inactive-accounts")
     @ResponseBody
