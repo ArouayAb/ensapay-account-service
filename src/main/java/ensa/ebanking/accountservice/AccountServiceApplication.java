@@ -58,7 +58,7 @@ public class AccountServiceApplication {
 			adminService.registerAdmin(
 					new AdminProfileDTO(
 							"adminSurname",
-							"0639554310",
+							"0624916360",
 							"emailAdmin@gmail.com"
 					),
 					"ensapay@@2022"
