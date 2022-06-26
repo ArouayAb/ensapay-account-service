@@ -59,13 +59,11 @@ public class Smsservice {
 		Date date_expiration = new Date(timeInSecs + (3 * 60 * 1000));
 		Sms otpSms = new Sms(phone, OTP, user, date_expiration);
 
-
 		//send code with vonage provider
 		VonageClient client = VonageClient.builder().apiKey("82dc50b5").apiSecret("cpgqKACNZWYcKC5K").build();
 		TextMessage message = new TextMessage("ENSA PAY",
 				vonageNumber,
 				"ENSA PAY Verification Code : " + OTP);
-
 
 		if (user != null) {
 			SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);
@@ -85,8 +83,6 @@ public class Smsservice {
 			System.out.println("User Not found ");
 			return HttpServletResponse.SC_EXPECTATION_FAILED;
 		}
-
-
 	}
 
 	public int verifieOtp(String phone, String code) {
@@ -100,7 +96,6 @@ public class Smsservice {
 			else{
 				return HttpServletResponse.SC_OK;
 			}
-
 		}
 	}
 }

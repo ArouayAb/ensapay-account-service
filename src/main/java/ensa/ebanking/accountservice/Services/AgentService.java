@@ -12,7 +12,6 @@ import ensa.ebanking.accountservice.Helpers.BankAccountHelper;
 import ensa.ebanking.accountservice.Helpers.EmailHelper;
 import net.bytebuddy.utility.RandomString;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -81,38 +80,29 @@ public class AgentService {
                 this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("validation"),
                         email.getJSONObject("body").getString("validation"));
-                List<User> users = userDAO.findByClientProfile(client);
-                if(users.size() > 0){
-                    User user = users.get(0);
-                    this.bankAccountHelper.addClientAccountToXml(user.getPhoneNumber(), user.getClientProfile().getName(),0D);
-                } else {
-                    throw new RuntimeException("Catastrophic failure, client doesn't have a user ?!!");
-                }
                 return clientProfileDAO.save(client);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    public void rejectAccount (String json){
+    public ClientProfile rejectAccount (String json){
         Long id = new JSONObject(json).getLong("id");
         try {
             JSONObject email = this.emailHelper.parseJsonFile("EmailDictionary.json");
             Optional<ClientProfile> optionalClientProfile = clientProfileDAO.findById(id);
             if (optionalClientProfile.isPresent()) {
                 ClientProfile client = optionalClientProfile.get();
-/*                this.emailHelper.sendEmail(client.getEmail(),
+                client.setAccountStatus(AccountStatus.REJECTED);
+                this.emailHelper.sendEmail(client.getEmail(),
                         email.getJSONObject("subject").getString("rejection"),
-                        email.getJSONObject("body").getString("rejection"));*/
-                List<User> users = userDAO.findByClientProfile(client);
-                userDAO.deleteById(users.get(0).getId());
-                clientProfileDAO.deleteClientProfileById(users.get(0).getClientProfile().getId());
+                        email.getJSONObject("body").getString("rejection"));
+                return clientProfileDAO.save(client);
             }
             else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);

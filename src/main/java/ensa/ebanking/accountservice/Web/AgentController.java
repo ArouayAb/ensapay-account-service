@@ -71,12 +71,20 @@ class AgentController {
             return ResponseEntity.ok(agentService.validAccount(json));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PutMapping("/reject-account")
-    public void reject(@RequestBody String json){agentService.rejectAccount(json);}
+    @ResponseBody
+    public ResponseEntity<ClientProfile> reject(@RequestBody String json){
+        try{
+            return ResponseEntity.ok(agentService.rejectAccount(json));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     @GetMapping("/inactive-accounts")
     @ResponseBody
