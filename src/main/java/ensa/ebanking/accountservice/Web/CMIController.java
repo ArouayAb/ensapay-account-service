@@ -99,7 +99,7 @@ public class CMIController {
         }
     }
 
-    @PostMapping("/consult-balance")
+    @RequestMapping(value = "/consult-balance", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<Double> consultBalance(@RequestBody String json) {
         try {
             return ResponseEntity.ok(cmiService.consultBankAccount(json));

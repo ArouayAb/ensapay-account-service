@@ -64,7 +64,7 @@ class AgentController {
         agentService.registerAgent(apdto);
     }
 
-    @PutMapping("/activate-account")
+    @RequestMapping(value = "/activate-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<ClientProfile> activate(@RequestBody String json){
         try{
@@ -75,7 +75,7 @@ class AgentController {
         }
     }
 
-    @PutMapping("/reject-account")
+    @RequestMapping(value = "/reject-account", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<ClientProfile> reject(@RequestBody String json){
         try{
