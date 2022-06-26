@@ -45,6 +45,14 @@ public class Creance {
         this.amount = amount;
     }
 
+    public Creance(LocalDateTime date, CreanceStatus creanceStatus, ClientProfile clientProfile, Creancier creancier, Double amount) {
+        this.date = date;
+        this.creanceStatus = creanceStatus;
+        this.clientProfile = clientProfile;
+        this.creancier = creancier;
+        this.amount = amount;
+    }
+
     public Double getAmount() {
         return amount;
     }
