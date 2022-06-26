@@ -1,13 +1,7 @@
 package ensa.ebanking.accountservice.Services;
 
-import ensa.ebanking.accountservice.DAO.CreanceDAO;
-import ensa.ebanking.accountservice.DAO.CreancierDAO;
-import ensa.ebanking.accountservice.DAO.ServiceProviderDAO;
-import ensa.ebanking.accountservice.DAO.UserDAO;
-import ensa.ebanking.accountservice.Entities.Creance;
-import ensa.ebanking.accountservice.Entities.Creancier;
-import ensa.ebanking.accountservice.Entities.ServiceProvider;
-import ensa.ebanking.accountservice.Entities.User;
+import ensa.ebanking.accountservice.DAO.*;
+import ensa.ebanking.accountservice.Entities.*;
 import ensa.ebanking.accountservice.Enums.CreanceStatus;
 import ensa.ebanking.accountservice.Enums.CreancierCategory;
 import ensa.ebanking.accountservice.Enums.ValidRecharge;
@@ -21,15 +15,19 @@ import ensa.ebanking.accountservice.soap.request.accountcreation.AccountCreation
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListRequest;
 import ensa.ebanking.accountservice.soap.request.creanceslist.CreancesListResponse;
 import ensa.ebanking.accountservice.soap.request.creancierslist.CreanciersListResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,6 +52,9 @@ public class CMIService {
 
     @Autowired
     UserDAO userDAO;
+
+    @Autowired
+    ClientProfileDAO clientProfileDAO;
 
     @Autowired
     Environment env;
@@ -125,22 +126,39 @@ public class CMIService {
         addCreance(phoneNumber, amount, user, creancier);
     }
 
-    public AccountCreationResponse createBankAccount(AccountCreationRequest bankAccountReq) throws IOException {
+//    public void createBankAccount(String json) throws IOException{
+//        JSONObject jsonObj = new JSONObject(json);
+//        Long id = Long.parseLong(jsonObj.getString("id"));
+//        Optional<ClientProfile> optClient = clientProfileDAO.findById(id);
+//        if (optClient.isPresent()) {
+//            ClientProfile client = optClient.get();
+//            List<User> users = userDAO.findByClientProfile(client);
+//            if (users.size() > 0 ) {
+//                User user = users.get(0);
+//                bankAccountHelper.addClientAccountToXml(user.getPhoneNumber(),
+//                        client.getName(),
+//                        Double.parseDouble(client.getProductType().plafond));
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        } else {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
+    public void createBankAccount(String json) throws IOException {
+        JSONObject jsonObj = new JSONObject(json);
         String accountNumber;
         try {
-            bankAccountHelper.findClientAccount(bankAccountReq.getPhoneNumber());
+            bankAccountHelper.findClientAccount(jsonObj.getString("phoneNumber"));
         } catch (BankAccountNotFoundException be) {
-            accountNumber = bankAccountHelper.addClientAccountToXml(bankAccountReq.getPhoneNumber(), bankAccountReq.getName(), bankAccountReq.getBalance());
+            accountNumber = bankAccountHelper.addClientAccountToXml(jsonObj.getString("phoneNumber"),
+                    jsonObj.getString("name"),
+                    500.0D);
             if(accountNumber == null) {
                 throw new BankAccountNotFoundException("Account number not found when creating");
             }
-            AccountCreationResponse bankAccountRes = new AccountCreationResponse();
-            bankAccountRes.setPhoneNumber(bankAccountReq.getPhoneNumber());
-            bankAccountRes.setName(bankAccountReq.getName());
-            bankAccountRes.setBalance(bankAccountReq.getBalance());
-            bankAccountRes.setAccountNumber(accountNumber);
-            return bankAccountRes;
+            return;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -148,25 +166,21 @@ public class CMIService {
         throw new BankAccountAlreadyExistException("Bank account with this phone number already exist");
     }
 
-    public AccountInfoResponse consultBankAccount(AccountInfoRequest consultAccountReq) {
-
+    public Double consultBankAccount(String json) {
+        JSONObject jsonObj = new JSONObject(json);
         Double balance;
         String accountNumber;
         try {
-            balance = bankAccountHelper.findClientAccountBalance(consultAccountReq.getPhoneNumber());
-            accountNumber = bankAccountHelper.findClientAccountAccountNumber(consultAccountReq.getPhoneNumber());
+            balance = bankAccountHelper.findClientAccountBalance(jsonObj.getString("phoneNumber"));
+            accountNumber = bankAccountHelper.findClientAccountAccountNumber(jsonObj.getString("phoneNumber"));
             if(accountNumber == null || balance == null) {
                 throw new BankAccountNotFoundException("Account info not found when consulting");
             }
+            return balance;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        AccountInfoResponse consultAccountRes = new AccountInfoResponse();
-        consultAccountRes.setBalance(balance);
-        consultAccountRes.setAccountNumber(accountNumber);
-        return consultAccountRes;
     }
 
     public CreanciersListResponse getCreanciersList() {
