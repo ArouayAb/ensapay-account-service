@@ -54,13 +54,16 @@ class AgentController {
             Files.createDirectories(uploadPath);
         }
 
-        InputStream inputStreamRecto=cinRecto.getInputStream();
-        InputStream inputStreamVerso=cinVerso.getInputStream();
-        Path filePathRecto=uploadPath.resolve(fileNameRecto);
-        Path filePathVerso=uploadPath.resolve(fileNameVerso);
-
-        Files.copy(inputStreamRecto, filePathRecto, StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(inputStreamVerso, filePathVerso, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            InputStream inputStreamRecto=cinRecto.getInputStream();
+            InputStream inputStreamVerso=cinVerso.getInputStream();
+            Path filePathRecto=uploadPath.resolve(fileNameRecto);
+            Path filePathVerso=uploadPath.resolve(fileNameVerso);
+            Files.copy(inputStreamRecto, filePathRecto, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStreamVerso, filePathVerso, StandardCopyOption.REPLACE_EXISTING);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         agentService.registerAgent(apdto);
     }
