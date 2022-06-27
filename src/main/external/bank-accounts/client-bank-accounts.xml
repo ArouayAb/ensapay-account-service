@@ -1,1 +1,7 @@
-<BankAccounts><bankAccount phoneNumber="123"><accountNumber>123123</accountNumber><name>name</name><balance>1222.5324</balance></bankAccount><bankAccount phoneNumber="0111222333"><accountNumber>523233436</accountNumber><name>Ahmed Annahir</name><balance>500.0</balance></bankAccount><bankAccount phoneNumber="0639554310"><accountNumber>513567732</accountNumber><name>Toumi Bader</name><balance>480.0</balance></bankAccount></BankAccounts>
+<BankAccounts>
+    <bankAccount phoneNumber="123">
+        <accountNumber>123123</accountNumber>
+        <name>name</name>
+        <balance>1222.5324</balance>
+    </bankAccount>
+</BankAccounts>
